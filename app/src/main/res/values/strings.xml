@@ -154,7 +154,6 @@
     <string name="select_stream_method">选择推流方式</string>
     <string name="direct_mode_option">📡 直连模式 (推荐，无需服务器)</string>
     <string name="rtmp_mode_option">🌐 RTMP 推流模式 (需要服务器)</string>
-    <string name="cancel">取消</string>
     <string name="rtmp_url_hint">rtmp://服务器地址/应用/流名</string>
     <string name="rtmp_stream_settings">🌐 RTMP 推流设置</string>
     <string name="rtmp_input_message">输入 RTMP 推流地址\n\n支持的服务器：\n• SRS: rtmp://IP/live/stream\n• nginx-rtmp: rtmp://IP/live/stream\n\n提示：在设置中可以配置默认地址</string>
@@ -205,4 +204,7 @@
     <string name="generate_web_player">生成网页播放器</string>
     <string name="surface_timeout_details">Surface 创建超时\n\n可能原因:\n1. SurfaceView 未正确显示\n2. 布局异常</string>
     <string name="encoder_init_failed">视频编码器初始化失败\n\n可能原因:\n1. 摄像头被其他应用占用\n2. 设备不支持该分辨率/帧率配置\n3. 内存不足</string>
+    <!-- Camera names -->
+    <string name="front_camera_name">前置摄像头</string>
+    <string name="rear_camera_name">后置摄像头</string>
 </resources>

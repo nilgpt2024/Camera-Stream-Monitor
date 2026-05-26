@@ -27,7 +27,7 @@ object LocaleHelper {
         prefs.edit().putString(KEY_LANGUAGE, language).apply()
     }
 
-    private fun updateResources(context: Context, language: Context): Context {
+    private fun updateResources(context: Context, language: String): Context {
         var locale = Locale(language)
         if (language == LANGUAGE_ZH) {
             locale = Locale.SIMPLIFIED_CHINESE
