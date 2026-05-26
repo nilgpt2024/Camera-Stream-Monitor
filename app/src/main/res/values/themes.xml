@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme - Material Design 3 Dark Theme -->
+    <style name="Theme.AndWin" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSecondaryContainer">@color/secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
+
+        <!-- Tertiary colors -->
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorOnTertiary">@color/on_surface</item>
+
+        <!-- Error colors -->
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/on_error</item>
+        <item name="colorErrorContainer">@color/error_container</item>
+        <item name="colorOnErrorContainer">@color/on_error_container</item>
+
+        <!-- Background & Surface -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/on_background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        <item name="colorSurfaceContainerLowest">@color/background</item>
+        <item name="colorSurfaceContainerLow">@color/surface_container_low</item>
+        <item name="colorSurfaceContainer">@color/surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_container_highest</item>
+
+        <!-- Outline colors -->
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outline_variant</item>
+
+        <!-- Status bar & Navigation bar -->
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/surface_container_low</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!-- Card style -->
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+
+        <!-- Component styles -->
+        <item name="materialButtonStyle">@style/Widget.AndWin.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.AndWin.CardView</item>
+        <item name="bottomNavigationStyle">@style/Widget.AndWin.BottomNavigation</item>
+
+        <!-- Typography -->
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.AndWin.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.AndWin.HeadlineMedium</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.AndWin.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.AndWin.BodyMedium</item>
+    </style>
+
+    <!-- Custom Button Style -->
+    <style name="Widget.AndWin.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">26dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingHorizontal">24dp</item>
+    </style>
+
+    <!-- Custom CardView Style -->
+    <style name="Widget.AndWin.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/outline_variant</item>
+    </style>
+
+    <!-- Bottom Navigation Style -->
+    <style name="Widget.AndWin.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconSize">24dp</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <!-- Typography Styles -->
+    <style name="TextAppearance.AndWin.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.AndWin.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.AndWin.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:lineHeight">28sp</item>
+    </style>
+
+    <style name="TextAppearance.AndWin.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:lineHeight">22sp</item>
+    </style>
+
+    <!-- Fullscreen theme for monitor activity -->
+    <style name="Theme.AndWin.Fullscreen" parent="Theme.AndWin">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

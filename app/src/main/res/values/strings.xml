@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">视频监控</string>
+    <string name="no_cameras">暂无摄像头</string>
+    <string name="add_camera">添加摄像头</string>
+    <string name="settings">设置</string>
+    <string name="back">返回</string>
+    <string name="start_recording">开始录制</string>
+    <string name="stop_recording">停止录制</string>
+    <string name="start_streaming">开始推流</string>
+    <string name="stop_streaming">停止推流</string>
+    <string name="play">播放</string>
+    <string name="pause">暂停</string>
+    <string name="stop">停止</string>
+    <string name="capture_photo">拍照</string>
+    <string name="switch_camera">切换摄像头</string>
+    <string name="stream_player">拉流播放</string>
+    <string name="recording">正在录制…</string>
+    <string name="streaming">正在推流…</string>
+    <string name="ready">就绪</string>
+    <string name="waiting_play">等待播放…</string>
+    <string name="video_saved">视频已保存</string>
+    <string name="photo_saved">照片已保存</string>
+    <string name="camera_not_ready">摄像头未就绪</string>
+    <string name="enter_stream_url">请输入RTMP推流地址</string>
+    <string name="enter_video_url">请输入视频地址</string>
+    <string name="already_recording">已在录制中</string>
+    <string name="already_streaming">已在推流中</string>
+    <string name="connecting">正在连接…</string>
+    <string name="start_stream_failed">启动推流失败</string>
+    <string name="permission_granted">权限已授予</string>
+    <string name="permission_required">需要所有权限才能正常使用</string>
+</resources>

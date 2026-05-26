@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary colors - Deep Indigo for professional look -->
+    <color name="primary">#FF4F46E5</color>
+    <color name="primary_dark">#FF3730A3</color>
+    <color name="primary_light">#FF818CF8</color>
+
+    <!-- Secondary colors - Cyan for accents -->
+    <color name="secondary">#FF06B6D4</color>
+    <color name="secondary_container">#FF164E63</color>
+
+    <!-- Tertiary colors - Amber for warnings/status -->
+    <color name="tertiary">#FFF59E0B</color>
+    <color name="tertiary_container">#FF92400E</color>
+
+    <!-- Error colors -->
+    <color name="error">#FFEF4444</color>
+    <color name="error_container">#FF991B1B</color>
+    <color name="on_error">#FFFFFFFF</color>
+
+    <!-- Success colors -->
+    <color name="success">#FF22C55E</color>
+    <color name="success_container">#FF166534</color>
+
+    <!-- Warning colors -->
+    <color name="warning">#FFF97316</color>
+    <color name="warning_container">#FF9A3412</color>
+
+    <!-- Background & Surface colors - Dark theme optimized for video -->
+    <color name="background">#FF09090B</color>
+    <color name="background_elevated">#FF111113</color>
+    <color name="surface">#FF18181B</color>
+    <color name="surface_variant">#FF1F1F23</color>
+    <color name="surface_container">#FF27272A</color>
+    <color name="surface_container_low">#FF1C1C1F</color>
+    <color name="surface_container_high">#FF2D2D31</color>
+    <color name="surface_container_highest">#FF38383C</color>
+
+    <!-- On-colors for text and icons -->
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="on_secondary">#FFFFFFFF</color>
+    <color name="on_surface">#FFFAFAFA</color>
+    <color name="on_surface_variant">#FFA1A1AA</color>
+    <color name="on_background">#FFFAFAFA</color>
+    <color name="on_error_container">#FFFFFBFE</color>
+
+    <!-- Outline colors -->
+    <color name="outline">#FF52525B</color>
+    <color name="outline_variant">#FF3F3F46</color>
+
+    <!-- Status indicator colors -->
+    <color name="status_ready">#FF22C55E</color>
+    <color name="status_recording">#FFEF4444</color>
+    <color name="status_streaming">#FF06B6D4</color>
+    <color name="status_connecting">#FFF59E0B</color>
+    <color name="status_error">#FFEF4444</color>
+
+    <!-- Overlay & Scrim colors -->
+    <color name="scrim">#FF000000</color>
+    <color name="overlay_dark">#CC000000</color>
+    <color name="overlay_medium">#99000000</color>
+    <color name="overlay_light">#66000000</color>
+
+    <!-- Glassmorphism effects -->
+    <color name="glass_background">#26FFFFFF</color>
+    <color name="glass_border">#33FFFFFF</color>
+    <color name="glass_surface_dark">#B3000000</color>
+    <color name="glass_surface_medium">#80000000</color>
+
+    <!-- Gradient colors -->
+    <color name="gradient_start">#FF4F46E5</color>
+    <color name="gradient_middle">#FF7C3AED</color>
+    <color name="gradient_end">#FF06B6D4</color>
+
+    <!-- Control specific colors -->
+    <color name="control_activated">#FF4F46E5</color>
+    <color name="control_normal">#FFA1A1AA</color>
+    <color name="control_highlight">#33FFFFFF</color>
+    <color name="control_disabled">#FF52525B</color>
+
+    <!-- Material Design 3 compatibility -->
+    <color name="primary_container">#FF4F46E5</color>
+    <color name="on_primary_container">#FFEADDFF</color>
+    <color name="on_secondary_container">#FFC4FEFF</color>
+    <color name="on_tertiary_container">#FFFFECD6</color>
+
+    <!-- Legacy compatibility -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="accent">#FF06B6D4</color>
+
+    <!-- Android resource aliases (for backward compatibility) -->
+    <color name="colorPrimary">@color/primary</color>
+    <color name="colorPrimaryDark">@color/primary_dark</color>
+    <color name="colorAccent">@color/accent</color>
+    <color name="colorBackground">@color/background</color>
+    <color name="colorSurface">@color/surface</color>
+    <color name="colorOnPrimary">@color/on_primary</color>
+    <color name="colorOnSurface">@color/on_surface</color>
+    <color name="colorOnBackground">@color/on_background</color>
+    <color name="colorError">@color/error</color>
+</resources>

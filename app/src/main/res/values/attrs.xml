@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TimeWatermarkView">
+        <!-- 文字颜色 -->
+        <attr name="watermarkTextColor" format="color" />
+        <!-- 文字大小 -->
+        <attr name="watermarkTextSize" format="dimension" />
+        <!-- 背景颜色 -->
+        <attr name="watermarkBackground" format="color" />
+        <!-- 是否显示日期 -->
+        <attr name="watermarkShowDate" format="boolean" />
+        <!-- 是否显示时间 -->
+        <attr name="watermarkShowTime" format="boolean" />
+        <!-- 是否显示毫秒 -->
+        <attr name="watermarkShowMs" format="boolean" />
+        <!-- 水印位置: 0=左上, 1=右上, 2=左下, 3=右下 -->
+        <attr name="watermarkPosition" format="enum">
+            <enum name="topLeft" value="0" />
+            <enum name="topRight" value="1" />
+            <enum name="bottomLeft" value="2" />
+            <enum name="bottomRight" value="3" />
+        </attr>
+        <!-- 内边距 X -->
+        <attr name="watermarkPaddingX" format="dimension" />
+        <!-- 内边距 Y -->
+        <attr name="watermarkPaddingY" format="dimension" />
+    </declare-styleable>
+</resources>

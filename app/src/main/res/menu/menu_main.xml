@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_cameras"
+        android:icon="@drawable/ic_videocam"
+        android:title="摄像头" />
+
+    <item
+        android:id="@+id/nav_recordings"
+        android:icon="@drawable/ic_video_file"
+        android:title="录制" />
+
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/ic_add"
+        android:title="添加" />
+
+    <item
+        android:id="@+id/nav_player"
+        android:icon="@drawable/ic_play_circle"
+        android:title="播放" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="设置" />
+
+</menu>

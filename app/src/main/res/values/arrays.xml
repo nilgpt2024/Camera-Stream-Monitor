@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="resolution_entries">
+        <item>SD (480p)</item>
+        <item>HD (720p)</item>
+        <item>Full HD (1080p)</item>
+        <item>4K</item>
+    </string-array>
+
+    <string-array name="resolution_values">
+        <item>854x480</item>
+        <item>1280x720</item>
+        <item>1920x1080</item>
+        <item>3840x2160</item>
+    </string-array>
+
+    <string-array name="fps_entries">
+        <item>15 FPS</item>
+        <item>24 FPS</item>
+        <item>30 FPS</item>
+        <item>60 FPS</item>
+    </string-array>
+
+    <string-array name="fps_values">
+        <item>15</item>
+        <item>24</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+</resources>

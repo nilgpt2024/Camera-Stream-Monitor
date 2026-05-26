@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".PlayerActivity">
+
+    <!-- Top Toolbar - Glassmorphism -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_top_bar_glass"
+        app:elevation="0dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="视频播放器"
+            app:titleTextColor="@color/on_surface" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- URL Input Card - Modern design -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/urlInputCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/outline_variant"
+        app:cardBackgroundColor="@color/surface_container"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Input field row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_input_field"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_stream"
+                    app:tint="@color/on_surface_variant"
+                    android:alpha="0.7" />
+
+                <EditText
+                    android:id="@+id/etUrl"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="输入视频流地址..."
+                    android:inputType="textUri"
+                    android:textColorHint="@color/on_surface_variant"
+                    android:textColor="@color/on_surface"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGo"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/primary"
+                    app:cornerRadius="20dp"
+                    android:text="GO"
+                    android:textColor="@color/on_primary"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Protocol chips -->
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:chipSpacingHorizontal="6dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipRtmp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="RTMP"
+                    android:textSize="11sp"
+                    android:textColor="@color/on_surface_variant" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipRtsp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="RTSP"
+                    android:textSize="11sp"
+                    android:textColor="@color/on_surface_variant" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHls"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="HLS"
+                    android:textSize="11sp"
+                    android:textColor="@color/on_surface_variant" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipDash"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="DASH"
+                    android:textSize="11sp"
+                    android:textColor="@color/on_surface_variant" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLocal"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="本地文件"
+                    android:textSize="11sp"
+                    android:textColor="@color/on_surface_variant" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Example hint -->
+            <TextView
+                android:id="@+id/tvExampleHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="示例：rtmp://live.example.com/stream 或 rtsp://192.168.1.100:554/live"
+                android:textColor="@color/on_surface_variant"
+                android:textSize="11sp"
+                android:alpha="0.7"
+                android:visibility="gone" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Player area -->
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/background"
+        app:layout_constraintBottom_toTopOf="@id/controlPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/urlInputCard">
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/playerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:use_controller="true"
+            app:resize_mode="fit" />
+
+        <!-- Status overlay -->
+        <LinearLayout
+            android:id="@+id/statusOverlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="20dp"
+            android:background="@drawable/bg_player_status"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_play_circle"
+                app:tint="@color/on_surface_variant"
+                android:alpha="0.5" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="等待输入视频流地址..."
+                android:textColor="@color/on_surface_variant"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="支持: RTMP / RTSP / HLS / DASH / 本地文件"
+                android:textColor="@color/on_surface_variant"
+                android:textSize="12sp"
+                android:alpha="0.6" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Bottom Control Panel -->
+    <LinearLayout
+        android:id="@+id/controlPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/bg_bottom_control_panel"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPlay"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1.2"
+            android:layout_marginEnd="8dp"
+            android:text="播放"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_play_arrow"
+            app:iconPadding="6dp"
+            app:cornerRadius="26dp"
+            style="@style/Widget.Material3.Button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPause"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text=""
+            android:textSize="13sp"
+            app:icon="@drawable/ic_pause"
+            app:iconPadding="6dp"
+            app:cornerRadius="26dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStop"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text=""
+            android:textSize="13sp"
+            app:icon="@drawable/ic_stop"
+            app:iconPadding="6dp"
+            app:cornerRadius="26dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBackToList"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:backgroundTint="@color/surface_container_high"
+            app:cornerRadius="26dp"
+            app:icon="@drawable/ic_back"
+            android:contentDescription="返回" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
