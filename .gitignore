@@ -4,6 +4,9 @@
 *.ap_
 *.aab
 
+# Submodules and external repositories
+RootEncoder/
+
 # Files for the ART/Dalvik VM
 *.dex
 
