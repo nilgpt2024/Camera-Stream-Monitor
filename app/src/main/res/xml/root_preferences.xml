@@ -1,66 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="视频设置">
+    <PreferenceCategory android:title="@string/settings_category_video">
 
         <ListPreference
             android:key="resolution"
-            android:title="默认分辨率"
+            android:title="@string/settings_resolution"
             android:defaultValue="1280x720"
             android:entries="@array/resolution_entries"
             android:entryValues="@array/resolution_values" />
 
         <ListPreference
             android:key="fps"
-            android:title="帧率 (FPS)"
+            android:title="@string/settings_fps"
             android:defaultValue="30"
             android:entries="@array/fps_entries"
             android:entryValues="@array/fps_values" />
 
         <EditTextPreference
             android:key="bitrate"
-            android:title="比特率 (bps)"
+            android:title="@string/settings_bitrate"
             android:defaultValue="2000000" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="存储设置">
+    <PreferenceCategory android:title="@string/settings_category_storage">
 
         <EditTextPreference
             android:key="storage_path"
-            android:title="存储路径"
+            android:title="@string/settings_storage_path"
             android:defaultValue="/Movies/VideoMonitor" />
 
         <SwitchPreferenceCompat
             android:key="auto_delete_old_videos"
-            android:title="自动删除旧录像"
-            android:summary="删除超过30天的录像文件"
+            android:title="@string/settings_auto_delete"
+            android:summary="@string/settings_auto_delete_summary"
             android:defaultValue="false" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="推流设置">
+    <PreferenceCategory android:title="@string/settings_category_stream">
 
         <EditTextPreference
             android:key="default_rtmp_url"
-            android:title="默认RTMP地址"
+            android:title="@string/settings_default_rtmp"
             android:defaultValue="" />
 
         <SwitchPreferenceCompat
             android:key="enable_audio_streaming"
-            android:title="启用音频推流"
+            android:title="@string/settings_enable_audio"
             android:defaultValue="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="关于">
+    <PreferenceCategory android:title="@string/settings_category_language">
+
+        <ListPreference
+            android:key="app_language"
+            android:title="@string/language_settings"
+            android:defaultValue="zh"
+            android:entries="@array/language_entries"
+            android:entryValues="@array/language_values"
+            android:summary="@string/restart_app_hint" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_category_about">
 
         <Preference
             android:key="version"
-            android:title="版本号"
+            android:title="@string/settings_version"
             android:summary="1.0.0" />
 
         <Preference
             android:key="about"
-            android:title="关于应用"
-            android:summary="视频监控系统 - 支持本地录制、RTMP推流和拉流播放" />
+            android:title="@string/settings_about"
+            android:summary="@string/settings_about_summary" />
     </PreferenceCategory>
 
 </PreferenceScreen>

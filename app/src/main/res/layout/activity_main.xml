@@ -134,7 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="摄像头"
+                            android:text="@string/cameras_label"
                             android:textColor="@color/on_surface_variant"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -179,7 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="录制文件"
+                            android:text="@string/recordings_label"
                             android:textColor="@color/on_surface_variant"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -199,7 +199,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="摄像头列表"
+                    android:text="@string/camera_list_title"
                     android:textColor="@color/on_surface"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -213,7 +213,7 @@
                     android:id="@+id/tvCameraCountLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2 个设备"
+                    android:text="@string/device_count"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -267,7 +267,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="点击下方按钮添加您的第一个摄像头"
+                    android:text="@string/empty_camera_hint"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="14sp"
                     android:lineSpacingMultiplier="1.4" />

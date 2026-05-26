@@ -1,9 +1,23 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">视频监控</string>
+
+    <!-- Main Activity -->
     <string name="no_cameras">暂无摄像头</string>
     <string name="add_camera">添加摄像头</string>
     <string name="settings">设置</string>
     <string name="back">返回</string>
+    <string name="ready">就绪</string>
+    
+    <!-- Camera List -->
+    <string name="camera_list_title">摄像头列表</string>
+    <string name="cameras_label">摄像头</string>
+    <string name="recordings_label">录制文件</string>
+    <string name="device_count">%1$d 个设备</string>
+    <string name="empty_camera_hint">点击下方按钮添加您的第一个摄像头</string>
+    <string name="camera_name_prefix">摄像头 %1$d</string>
+
+    <!-- Monitor Activity -->
     <string name="start_recording">开始录制</string>
     <string name="stop_recording">停止录制</string>
     <string name="start_streaming">开始推流</string>
@@ -16,17 +30,179 @@
     <string name="stream_player">拉流播放</string>
     <string name="recording">正在录制…</string>
     <string name="streaming">正在推流…</string>
-    <string name="ready">就绪</string>
     <string name="waiting_play">等待播放…</string>
     <string name="video_saved">视频已保存</string>
     <string name="photo_saved">照片已保存</string>
     <string name="camera_not_ready">摄像头未就绪</string>
+    
+    <!-- Stream URL Input -->
     <string name="enter_stream_url">请输入RTMP推流地址</string>
     <string name="enter_video_url">请输入视频地址</string>
+    
+    <!-- Status Messages -->
     <string name="already_recording">已在录制中</string>
     <string name="already_streaming">已在推流中</string>
     <string name="connecting">正在连接…</string>
     <string name="start_stream_failed">启动推流失败</string>
+    
+    <!-- Permission -->
     <string name="permission_granted">权限已授予</string>
     <string name="permission_required">需要所有权限才能正常使用</string>
+    
+    <!-- Camera Initialization -->
+    <string name="camera_initializing">摄像头正在初始化，请稍候…</string>
+    <string name="camera_init_failed">摄像头初始化失败</string>
+    <string name="camera_error">摄像头错误: %1$s</string>
+    <string name="no_dual_camera_support">本设备不支持双摄模式，已切换到单摄</string>
+    <string name="stop_before_mode_switch">请先停止录制/推流后再切换模式</string>
+    <string name="dual_mode_enabled">✅ 已开启双摄模式（前后同时录制）</string>
+    <string name="dual_mode_disabled">已关闭双摄模式</string>
+    <string name="mode_switch_failed">切换失败: %1$s</string>
+    
+    <!-- Recording -->
+    <string name="record_failed">视频录制失败: %1$s\n尝试拍照模式…</string>
+    <string name="front_photo_saved">📷 前置照片已保存</string>
+    <string name="rear_photo_saved">📷 后置照片已保存</string>
+    <string name="photo_saved_with_name">📷 照片已保存: %1$s</string>
+    
+    <!-- Streaming -->
+    <string name="enter_rtmp_url">请输入推流地址</string>
+    <string name="already_streaming_stop_first">已在推流中，请先停止</string>
+    <string name="stop_record_before_stream">请先停止录制再开始推流</string>
+    <string name="copied_to_clipboard">已复制到剪贴板</string>
+    <string name="copied_success_emoji">✅ 已复制到剪贴板</string>
+    <string name="webpage_saved">📄 网页已保存: %1$s</string>
+    <string name="webpage_save_failed">生成网页失败: %1$s</string>
+    <string name="connection_failed">❌ 连接失败: %1$s</string>
+    <string name="establishing_connection">🔄 正在建立连接…</string>
+    <string name="stream_started_success">✅ 推流成功！外部设备可查看</string>
+    <string name="stream_stopped">已停止推流</string>
+    <string name="stream_error">⚠️ 错误: %1$s</string>
+    <string name="surface_timeout">Surface创建超时</string>
+    <string name="rtmp_stream_success">✅ RTMP 推流成功!\n%1$s</string>
+    <string name="rtmp_start_failed">启动推流失败</string>
+    <string name="stream_exception">推流异常: %1$s</string>
+    <string name="camera_reinit_failed">摄像头重新初始化失败</string>
+    <string name="switched_to_camera">已切换到%1$s摄像头</string>
+    <string name="switch_camera_failed">切换摄像头失败</string>
+    
+    <!-- Player Activity -->
+    <string name="enter_video_url_toast">请输入视频地址</string>
+    <string name="file_picker_error">无法打开文件选择器: %1$s</string>
+    <string name="file_selected">已选择: %1$s</string>
+    <string name="protocol_prefilled">已填入协议前缀，请补充完整地址</string>
+    <string name="playing_file">播放: %1$s</string>
+    <string name="playback_failed">播放失败: %1$s</string>
+    <string name="connecting_protocol">正在连接 %1$s 流…</string>
+    <string name="player_stopped">已停止\n\n支持: RTMP / RTSP / HLS / DASH / 本地文件</string>
+    <string name="example_rtmp">RTMP 推流地址格式:\nrtmp://服务器地址/应用名/流名\n\n示例: rtmp://live.example.com/live/stream1</string>
+    <string name="example_rtsp">RTSP 摄像头/监控地址格式:\nrtsp://IP地址:端口/路径\n\n示例: rtsp://192.168.1.100:554/live/ch1\n示例: rtsp://admin:password@192.168.1.100:554/h264/ch1/main/av_stream</string>
+    <string name="example_hls">HLS 直播流地址格式:\nhttp://服务器地址/路径.m3u8\n\n示例: http://live.example.com/live/stream.m3u8\n示例: https://devstreaming-cdn.apple.com/videos/big_buck_bunny/master.m3u8</string>
+    <string name="example_dash">DASH 自适应码率流地址:\nhttp://服务器地址/路径.mpd\n\n示例: http://example.com/dash/stream.mpd</string>
+    <string name="unknown_file">未知文件</string>
+    <string name="playback_failed_simple">播放失败</string>
+    <string name="network_stream">网络流</string>
+    
+    <!-- Recordings Activity -->
+    <string name="recordings_title">录制记录</string>
+    <string name="no_recordings">暂无录制</string>
+    <string name="video_count_and_size">%1$d 个视频 · %2$s</string>
+    <string name="delete_confirm_title">删除确认</string>
+    <string name="delete_confirm_message">确定要删除 \"%1$s\" 吗？</string>
+    <string name="delete">删除</string>
+    <string name="cancel">取消</string>
+    <string name="clear_all_confirm_title">清空确认</string>
+    <string name="clear_all_confirm_message">确定要删除全部 %1$d 个录制文件吗？此操作不可恢复！</string>
+    <string name="clear_all">清空全部</string>
+    <string name="delete_failed">删除失败</string>
+    <string name="deleted_files">已删除 %1$d 个文件</string>
+    
+    <!-- Settings -->
+    <string name="language_settings">语言设置</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_english">English</string>
+    <string name="restart_app_hint">重启应用后生效</string>
+
+    <!-- Settings Categories -->
+    <string name="settings_category_video">视频设置</string>
+    <string name="settings_category_storage">存储设置</string>
+    <string name="settings_category_stream">推流设置</string>
+    <string name="settings_category_language">语言与区域</string>
+    <string name="settings_category_about">关于</string>
+
+    <!-- Settings Items -->
+    <string name="settings_resolution">默认分辨率</string>
+    <string name="settings_fps">帧率 (FPS)</string>
+    <string name="settings_bitrate">比特率 (bps)</string>
+    <string name="settings_storage_path">存储路径</string>
+    <string name="settings_auto_delete">自动删除旧录像</string>
+    <string name="settings_auto_delete_summary">删除超过30天的录像文件</string>
+    <string name="settings_default_rtmp">默认RTMP地址</string>
+    <string name="settings_enable_audio">启用音频推流</string>
+    <string name="settings_version">版本号</string>
+    <string name="settings_about">关于应用</string>
+    <string name="settings_about_summary">视频监控系统 - 支持本地录制、RTMP推流和拉流播放</string>
+
+    <!-- Monitor Activity - Additional -->
+    <string name="hint_record_with_dual">点击红色按钮开始录制 | 紫色按钮尝试双摄</string>
+    <string name="hint_single_camera">点击红色按钮开始录制 | 本设备只有一个摄像头</string>
+    <string name="init_failed">初始化失败</string>
+    <string name="dual_mode_info">双摄模式 | 前置+后置</string>
+    <string name="initializing_camera">正在初始化摄像头…</string>
+    <string name="video_saved_with_info">🎬 视频已保存: %1$s (%2$dKB)</string>
+    <string name="photo_saved_info">📸 已保存: %1$s (%2$dKB)</string>
+    <string name="select_stream_method">选择推流方式</string>
+    <string name="direct_mode_option">📡 直连模式 (推荐，无需服务器)</string>
+    <string name="rtmp_mode_option">🌐 RTMP 推流模式 (需要服务器)</string>
+    <string name="cancel">取消</string>
+    <string name="rtmp_url_hint">rtmp://服务器地址/应用/流名</string>
+    <string name="rtmp_stream_settings">🌐 RTMP 推流设置</string>
+    <string name="rtmp_input_message">输入 RTMP 推流地址\n\n支持的服务器：\n• SRS: rtmp://IP/live/stream\n• nginx-rtmp: rtmp://IP/live/stream\n\n提示：在设置中可以配置默认地址</string>
+    <string name="start_stream">开始推流</string>
+    <string name="client_connected">客户端已连接</string>
+    <string name="waiting_connection">等待连接…</string>
+    <string name="error_status">错误</string>
+    <string name="stream_failed_title">❌ 推流失败</string>
+    <string name="stream_error_details">错误信息:\n%1$s\n\n可能的原因:\n1. 摄像头被其他应用占用\n2. 音频权限未授予\n3. 网络配置问题</string>
+    <string name="view_log">查看日志</string>
+    <string name="close">关闭</string>
+    <string name="step_switch_mode">步骤1/4: 切换到推流模式…</string>
+    <string name="step_wait_surface">步骤2/4: 等待Surface创建…</string>
+    <string name="step_init_encoder">步骤3/4: 初始化编码器…</string>
+    <string name="step_start_preview_server">步骤4/4: 启动摄像头预览和RTSP服务…</string>
+    <string name="direct_service_started">✅ 直连服务已启动</string>
+    <string name="stream_success_title">🎉 推流成功！</string>
+    <string name="rtsp_started_message">RTSP 服务已启动\n\n📍 地址: %1$s\n\n📺 在电脑上用 VLC 打开此地址即可观看\n\n⚠️ 注意: 如果音频初始化失败，将只推送视频流</string>
+    <string name="copy_address">复制地址</string>
+    <string name="generate_webpage">生成网页</string>
+    <string name="rtsp_start_failed">启动 RTSP 服务器失败\n\n可能原因: 端口 8554 被占用或网络权限不足</string>
+    <string name="exception_error">异常: %1$s\n%2$s</string>
+    <string name="failed_status">失败</string>
+    <string name="retry">重试</string>
+    <string name="debug_info_title">📋 调试信息</string>
+    <string name="ok">确定</string>
+    <string name="got_it">知道了</string>
+    <string name="releasing_resources">正在释放推流资源…</string>
+    <string name="reinitializing_camerax">正在重新初始化CameraX…</string>
+    <string name="front_camera">前置</string>
+    <string name="rear_camera">后置</string>
+    <string name="camera_switched">已切换</string>
+    <string name="stop_dual_recording">⏹ 停止双录</string>
+    <string name="stop_recording_btn">⏹ 停止录制</string>
+    <string name="start_dual_recording">▶️ 开始双录</string>
+    <string name="start_recording_btn">⏺ 开始录制</string>
+    <string name="stop_streaming_btn">■ 停止推流</string>
+    <string name="start_streaming_btn">▶ 开始推流</string>
+    <string name="stream_failed_status">推流失败</string>
+    <string name="connecting_to_server">正在连接服务器…</string>
+    <string name="disconnected">已断开</string>
+    <string name="step_rtmp_1">步骤1/3: 切换到推流模式…</string>
+    <string name="step_rtmp_2">步骤2/3: 等待Surface创建…</string>
+    <string name="step_rtmp_3">步骤3/3: 初始化RTMP编码器并启动推流…</string>
+    <string name="streaming_status">推流中</string>
+    <string name="direct_mode_title">🎯 直连模式 - P2P 视频传输</string>
+    <string name="direct_stream_info">✅ 直连服务已启动！无需任何中转服务器\n\n📍 本机 IP: %1$s\n\n📺 其他设备连接方式：\n\n【方式1】VLC 播放器（推荐）\n打开 VLC → 媒体 → 打开网络串流 → 输入:\n%2$s\n\n【方式2】ffplay 命令行\nffplay %2$s\n\n【方式3】另一部手机\n使用 VLC App 或本App播放器打开上述地址\n\n⚠️ 确保所有设备在同一 WiFi 网络</string>
+    <string name="generate_web_player">生成网页播放器</string>
+    <string name="surface_timeout_details">Surface 创建超时\n\n可能原因:\n1. SurfaceView 未正确显示\n2. 布局异常</string>
+    <string name="encoder_init_failed">视频编码器初始化失败\n\n可能原因:\n1. 摄像头被其他应用占用\n2. 设备不支持该分辨率/帧率配置\n3. 内存不足</string>
 </resources>

@@ -10,9 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.ui.PlayerView
 import com.andwin.video.databinding.ActivityPlayerBinding
 import com.andwin.video.player.StreamPlayer
+import com.andwin.video.utils.LocaleHelper
 import java.io.File
 
 class PlayerActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: android.content.Context?) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase!!, LocaleHelper.getLocale(newBase)))
+    }
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var streamPlayer: StreamPlayer
@@ -53,7 +58,7 @@ class PlayerActivity : AppCompatActivity() {
                     playStream(url)
                 }
             } else {
-                Toast.makeText(this, "请输入视频地址", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_video_url_toast), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -66,7 +71,7 @@ class PlayerActivity : AppCompatActivity() {
                     playStream(url)
                 }
             } else {
-                Toast.makeText(this, "请输入视频地址", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_video_url_toast), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -77,7 +82,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.btnStop.setOnClickListener {
             streamPlayer.stop()
             binding.tvStatus.visibility = View.VISIBLE
-            binding.tvStatus.text = "已停止\n\n支持: RTMP / RTSP / HLS / DASH / 本地文件"
+            binding.tvStatus.text = getString(R.string.player_stopped)
         }
 
         binding.btnBackToList.setOnClickListener {
@@ -91,22 +96,22 @@ class PlayerActivity : AppCompatActivity() {
             R.id.chipRtmp -> {
                 binding.etUrl.setText("rtmp://")
                 binding.etUrl.setSelection(binding.etUrl.text?.length ?: 0)
-                showExample("RTMP 推流地址格式:\nrtmp://服务器地址/应用名/流名\n\n示例: rtmp://live.example.com/live/stream1")
+                showExample(getString(R.string.example_rtmp))
             }
             R.id.chipRtsp -> {
                 binding.etUrl.setText("rtsp://")
                 binding.etUrl.setSelection(binding.etUrl.text?.length ?: 0)
-                showExample("RTSP 摄像头/监控地址格式:\nrtsp://IP地址:端口/路径\n\n示例: rtsp://192.168.1.100:554/live/ch1\n示例: rtsp://admin:password@192.168.1.100:554/h264/ch1/main/av_stream")
+                showExample(getString(R.string.example_rtsp))
             }
             R.id.chipHls -> {
                 binding.etUrl.setText("http://")
                 binding.etUrl.setSelection(binding.etUrl.text?.length ?: 0)
-                showExample("HLS 直播流地址格式:\nhttp://服务器地址/路径.m3u8\n\n示例: http://live.example.com/live/stream.m3u8\n示例: https://devstreaming-cdn.apple.com/videos/big_buck_bunny/master.m3u8")
+                showExample(getString(R.string.example_hls))
             }
             R.id.chipDash -> {
                 binding.etUrl.setText("http://")
                 binding.etUrl.setSelection(binding.etUrl.text?.length ?: 0)
-                showExample("DASH 自适应码率流地址:\nhttp://服务器地址/路径.mpd\n\n示例: http://example.com/dash/stream.mpd")
+                showExample(getString(R.string.example_dash))
             }
             R.id.chipLocal -> {
                 pickLocalFile()
@@ -122,7 +127,7 @@ class PlayerActivity : AppCompatActivity() {
             }
             startActivityForResult(intent, FILE_PICKER_REQUEST)
         } catch (e: Exception) {
-            Toast.makeText(this, "无法打开文件选择器: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, String.format(getString(R.string.file_picker_error), e.message), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -132,7 +137,7 @@ class PlayerActivity : AppCompatActivity() {
             data?.data?.let { uri ->
                 val fileName = getFileName(uri)
                 binding.etUrl.setText(uri.toString())
-                Toast.makeText(this, "已选择: $fileName", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, String.format(getString(R.string.file_selected), fileName), Toast.LENGTH_SHORT).show()
                 
                 if (autoPlay || true) {
                     playStream(uri.toString())
@@ -142,7 +147,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun getFileName(uri: Uri): String {
-        var fileName = "未知文件"
+        var fileName = getString(R.string.unknown_file)
         contentResolver.query(uri, null, null, null, null)?.use { cursor ->
             if (cursor.moveToFirst()) {
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
@@ -157,7 +162,7 @@ class PlayerActivity : AppCompatActivity() {
     private fun showExample(example: String) {
         binding.tvStatus.text = example
         binding.tvStatus.visibility = View.VISIBLE
-        Toast.makeText(this, "已填入协议前缀，请补充完整地址", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, getString(R.string.protocol_prefilled), Toast.LENGTH_LONG).show()
     }
 
     private fun playLocalVideo(path: String) {
@@ -165,10 +170,10 @@ class PlayerActivity : AppCompatActivity() {
             val fileUri = Uri.fromFile(File(path))
             streamPlayer.playStream(fileUri.toString())
             binding.tvStatus.visibility = View.GONE
-            Toast.makeText(this, "播放: ${File(path).name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, String.format(getString(R.string.playing_file), File(path).name), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            Toast.makeText(this, "播放失败: ${e.message}", Toast.LENGTH_LONG).show()
-            binding.tvStatus.text = "播放失败"
+            Toast.makeText(this, String.format(getString(R.string.playback_failed), e.message), Toast.LENGTH_LONG).show()
+            binding.tvStatus.text = getString(R.string.playback_failed_simple)
             binding.tvStatus.visibility = View.VISIBLE
         }
     }
@@ -183,12 +188,12 @@ class PlayerActivity : AppCompatActivity() {
                 url.startsWith("rtsp://") -> "RTSP"
                 url.contains(".m3u8") -> "HLS"
                 url.contains(".mpd") -> "DASH"
-                else -> "网络流"
+                else -> getString(R.string.network_stream)
             }
-            Toast.makeText(this, "正在连接 $protocol 流...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, String.format(getString(R.string.connecting_protocol), protocol), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            Toast.makeText(this, "播放失败: ${e.message}", Toast.LENGTH_LONG).show()
-            binding.tvStatus.text = "连接失败\n${e.message}"
+            Toast.makeText(this, String.format(getString(R.string.playback_failed), e.message), Toast.LENGTH_LONG).show()
+            binding.tvStatus.text = String.format(getString(R.string.connection_failed), e.message)
             binding.tvStatus.visibility = View.VISIBLE
         }
     }

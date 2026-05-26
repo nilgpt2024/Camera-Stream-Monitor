@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andwin.video.databinding.ActivityMainBinding
 import com.andwin.video.model.CameraConfig
+import com.andwin.video.utils.LocaleHelper
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +28,10 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
+
+    override fun attachBaseContext(newBase: android.content.Context?) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase!!, LocaleHelper.getLocale(newBase)))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_add -> {
                     openMonitor(CameraConfig(
                         id = System.currentTimeMillis().toString(),
-                        name = "摄像头 ${cameraList.size + 1}"
+                        name = getString(R.string.camera_name_prefix, cameraList.size + 1)
                     ))
                     true
                 }
@@ -106,14 +111,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             binding.tvCameraCount.text = cameraList.size.toString()
-            binding.tvCameraCountLabel.text = "${cameraList.size} 个设备"
+            binding.tvCameraCountLabel.text = getString(R.string.device_count, cameraList.size)
         }
     }
 
     private suspend fun loadCameraConfigs(): List<CameraConfig> {
         return listOf(
-            CameraConfig(id = "1", name = "前置摄像头", cameraId = "0"),
-            CameraConfig(id = "2", name = "后置摄像头", cameraId = "1")
+            CameraConfig(id = "1", name = getString(R.string.front_camera_name), cameraId = "0"),
+            CameraConfig(id = "2", name = getString(R.string.rear_camera_name), cameraId = "1")
         )
     }
 
@@ -128,9 +133,9 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                Toast.makeText(this, "权限已授予", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "需要所有权限才能正常使用", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.permission_required), Toast.LENGTH_LONG).show()
             }
         }
     }

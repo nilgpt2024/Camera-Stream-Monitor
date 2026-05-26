@@ -14,12 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andwin.video.databinding.ActivityRecordingsBinding
 import com.andwin.video.recorder.VideoRecorder
+import com.andwin.video.utils.LocaleHelper
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class RecordingsActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: android.content.Context?) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase!!, LocaleHelper.getLocale(newBase)))
+    }
 
     private lateinit var binding: ActivityRecordingsBinding
     private lateinit var videoRecorder: VideoRecorder
@@ -40,7 +45,7 @@ class RecordingsActivity : AppCompatActivity() {
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "录制记录"
+        supportActionBar?.title = getString(R.string.recordings_title)
     }
 
     private fun setupRecyclerView() {
@@ -65,13 +70,13 @@ class RecordingsActivity : AppCompatActivity() {
         if (files.isEmpty()) {
             binding.emptyView.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.GONE
-            binding.tvCount.text = "暂无录制"
+            binding.tvCount.text = getString(R.string.no_recordings)
         } else {
             binding.emptyView.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
             
             val totalSize = formatFileSize(videoRecorder.getTotalSize())
-            binding.tvCount.text = "${files.size} 个视频 · $totalSize"
+            binding.tvCount.text = getString(R.string.video_count_and_size, files.size, totalSize)
             
             adapter.submitList(files)
         }
@@ -87,9 +92,9 @@ class RecordingsActivity : AppCompatActivity() {
 
     private fun confirmDelete(file: File, position: Int) {
         AlertDialog.Builder(this)
-            .setTitle("删除确认")
-            .setMessage("确定要删除 \"${file.name}\" 吗？")
-            .setPositiveButton("删除") { _, _ ->
+            .setTitle(getString(R.string.delete_confirm_title))
+            .setMessage(getString(R.string.delete_confirm_message, file.name))
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
                 if (videoRecorder.deleteRecording(file)) {
                     adapter.notifyItemRemoved(position)
                     loadRecordings()
@@ -102,10 +107,10 @@ class RecordingsActivity : AppCompatActivity() {
                         adapter.submitList(newList)
                     }
                 } else {
-                    android.widget.Toast.makeText(this, "删除失败", android.widget.Toast.LENGTH_SHORT).show()
+                    android.widget.Toast.makeText(this, getString(R.string.delete_failed), android.widget.Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
@@ -133,15 +138,15 @@ class RecordingsActivity : AppCompatActivity() {
         if (count == 0) return
         
         AlertDialog.Builder(this)
-            .setTitle("清空确认")
-            .setMessage("确定要删除全部 $count 个录制文件吗？此操作不可恢复！")
-            .setPositiveButton("清空全部") { dialog: android.content.DialogInterface, which: Int ->
+            .setTitle(getString(R.string.clear_all_confirm_title))
+            .setMessage(getString(R.string.clear_all_confirm_message, count))
+            .setPositiveButton(getString(R.string.clear_all)) { dialog: android.content.DialogInterface, which: Int ->
                 val deleted = videoRecorder.clearAllRecordings()
                 adapter.submitList(emptyList())
                 loadRecordings()
-                android.widget.Toast.makeText(this, "已删除 $deleted 个文件", android.widget.Toast.LENGTH_SHORT).show()
+                android.widget.Toast.makeText(this, getString(R.string.deleted_files, deleted), android.widget.Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 

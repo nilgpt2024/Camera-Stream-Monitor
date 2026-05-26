@@ -1,0 +1,211 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Video Monitor</string>
+
+    <!-- Main Activity -->
+    <string name="no_cameras">No Cameras</string>
+    <string name="add_camera">Add Camera</string>
+    <string name="settings">Settings</string>
+    <string name="back">Back</string>
+    <string name="ready">Ready</string>
+    
+    <!-- Camera List -->
+    <string name="camera_list_title">Camera List</string>
+    <string name="cameras_label">Cameras</string>
+    <string name="recordings_label">Recordings</string>
+    <string name="device_count">%1$d devices</string>
+    <string name="empty_camera_hint">Tap the button below to add your first camera</string>
+    <string name="camera_name_prefix">Camera %1$d</string>
+
+    <!-- Monitor Activity -->
+    <string name="start_recording">Start Recording</string>
+    <string name="stop_recording">Stop Recording</string>
+    <string name="start_streaming">Start Streaming</string>
+    <string name="stop_streaming">Stop Streaming</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="capture_photo">Capture Photo</string>
+    <string name="switch_camera">Switch Camera</string>
+    <string name="stream_player">Stream Player</string>
+    <string name="recording">Recording…</string>
+    <string name="streaming">Streaming…</string>
+    <string name="waiting_play">Waiting to play…</string>
+    <string name="video_saved">Video saved</string>
+    <string name="photo_saved">Photo saved</string>
+    <string name="camera_not_ready">Camera not ready</string>
+    
+    <!-- Stream URL Input -->
+    <string name="enter_stream_url">Enter RTMP stream URL</string>
+    <string name="enter_video_url">Enter video URL</string>
+    
+    <!-- Status Messages -->
+    <string name="already_recording">Already recording</string>
+    <string name="already_streaming">Already streaming</string>
+    <string name="connecting">Connecting…</string>
+    <string name="start_stream_failed">Failed to start streaming</string>
+    
+    <!-- Permission -->
+    <string name="permission_granted">Permissions granted</string>
+    <string name="permission_required">All permissions are required for normal operation</string>
+    
+    <!-- Camera Initialization -->
+    <string name="camera_initializing">Camera is initializing, please wait…</string>
+    <string name="camera_init_failed">Camera initialization failed</string>
+    <string name="camera_error">Camera error: %1$s</string>
+    <string name="no_dual_camera_support">Device does not support dual camera mode, switched to single</string>
+    <string name="stop_before_mode_switch">Please stop recording/streaming before switching mode</string>
+    <string name="dual_mode_enabled">✅ Dual camera mode enabled (front &amp; back)</string>
+    <string name="dual_mode_disabled">Dual camera mode disabled</string>
+    <string name="mode_switch_failed">Mode switch failed: %1$s</string>
+    
+    <!-- Recording -->
+    <string name="record_failed">Video recording failed: %1$s\nTrying photo mode…</string>
+    <string name="front_photo_saved">📷 Front photo saved</string>
+    <string name="rear_photo_saved">📷 Rear photo saved</string>
+    <string name="photo_saved_with_name">📷 Photo saved: %1$s</string>
+    
+    <!-- Streaming -->
+    <string name="enter_rtmp_url">Enter stream URL</string>
+    <string name="already_streaming_stop_first">Already streaming, please stop first</string>
+    <string name="stop_record_before_stream">Please stop recording before starting stream</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="copied_success_emoji">✅ Copied to clipboard</string>
+    <string name="webpage_saved">📄 Webpage saved: %1$s</string>
+    <string name="webpage_save_failed">Failed to generate webpage: %1$s</string>
+    <string name="connection_failed">❌ Connection failed: %1$s</string>
+    <string name="establishing_connection">🔄 Establishing connection…</string>
+    <string name="stream_started_success">✅ Stream started! External devices can view</string>
+    <string name="stream_stopped">Streaming stopped</string>
+    <string name="stream_error">⚠️ Error: %1$s</string>
+    <string name="surface_timeout">Surface creation timeout</string>
+    <string name="rtmp_stream_success">✅ RTMP stream started!\n%1$s</string>
+    <string name="rtmp_start_failed">Failed to start streaming</string>
+    <string name="stream_exception">Stream exception: %1$s</string>
+    <string name="camera_reinit_failed">Camera re-initialization failed</string>
+    <string name="switched_to_camera">Switched to %1$s camera</string>
+    <string name="switch_camera_failed">Failed to switch camera</string>
+    
+    <!-- Player Activity -->
+    <string name="enter_video_url_toast">Enter video URL</string>
+    <string name="file_picker_error">Cannot open file picker: %1$s</string>
+    <string name="file_selected">Selected: %1$s</string>
+    <string name="protocol_prefilled">Protocol prefix filled, please complete the address</string>
+    <string name="playing_file">Playing: %1$s</string>
+    <string name="playback_failed">Playback failed: %1$s</string>
+    <string name="connecting_protocol">Connecting to %1$s stream…</string>
+    <string name="player_stopped">Stopped\n\nSupports: RTMP / RTSP / HLS / DASH / Local files</string>
+    <string name="example_rtmp">RTMP Stream URL Format:\nrtmp://server/app/stream\n\nExample: rtmp://live.example.com/live/stream1</string>
+    <string name="example_rtsp">RTSP Camera/Monitor URL Format:\nrtsp://IP:port/path\n\nExample: rtsp://192.168.1.100:554/live/ch1\nExample: rtsp://admin:password@192.168.1.100:554/h264/ch1/main/av_stream</string>
+    <string name="example_hls">HLS Live Stream URL:\nhttp://server/path.m3u8\n\nExample: http://live.example.com/live/stream.m3u8\nExample: https://devstreaming-cdn.apple.com/videos/big_buck_bunny/master.m3u8</string>
+    <string name="example_dash">DASH Adaptive Bitrate Stream:\nhttp://server/path.mpd\n\nExample: http://example.com/dash/stream.mpd</string>
+    <string name="unknown_file">Unknown file</string>
+    <string name="playback_failed_simple">Playback failed</string>
+    <string name="network_stream">Network Stream</string>
+    
+    <!-- Recordings Activity -->
+    <string name="recordings_title">Recordings</string>
+    <string name="no_recordings">No recordings</string>
+    <string name="video_count_and_size">%1$d videos · %2$s</string>
+    <string name="delete_confirm_title">Delete Confirmation</string>
+    <string name="delete_confirm_message">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="clear_all_confirm_title">Clear All Confirmation</string>
+    <string name="clear_all_confirm_message">Are you sure you want to delete all %1$d recording files? This cannot be undone!</string>
+    <string name="clear_all">Clear All</string>
+    <string name="delete_failed">Delete failed</string>
+    <string name="deleted_files">Deleted %1$d files</string>
+    
+    <!-- Settings -->
+    <string name="language_settings">Language</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_english">English</string>
+    <string name="restart_app_hint">Restart app to apply changes</string>
+
+    <!-- Settings Categories -->
+    <string name="settings_category_video">Video Settings</string>
+    <string name="settings_category_storage">Storage Settings</string>
+    <string name="settings_category_stream">Stream Settings</string>
+    <string name="settings_category_language">Language &amp; Region</string>
+    <string name="settings_category_about">About</string>
+
+    <!-- Settings Items -->
+    <string name="settings_resolution">Default Resolution</string>
+    <string name="settings_fps">Frame Rate (FPS)</string>
+    <string name="settings_bitrate">Bitrate (bps)</string>
+    <string name="settings_storage_path">Storage Path</string>
+    <string name="settings_auto_delete">Auto-delete old recordings</string>
+    <string name="settings_auto_delete_summary">Delete recordings older than 30 days</string>
+    <string name="settings_default_rtmp">Default RTMP URL</string>
+    <string name="settings_enable_audio">Enable audio streaming</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_about">About App</string>
+    <string name="settings_about_summary">Video Monitor - Local recording, RTMP streaming and playback</string>
+
+    <!-- Monitor Activity - Additional -->
+    <string name="hint_record_with_dual">Tap red button to record | Purple for dual cam</string>
+    <string name="hint_single_camera">Tap red button to record | Device has one camera</string>
+    <string name="init_failed">Initialization failed</string>
+    <string name="dual_mode_info">Dual Mode | Front + Back</string>
+    <string name="initializing_camera">Initializing camera…</string>
+    <string name="video_saved_with_info">🎬 Video saved: %1$s (%2$dKB)</string>
+    <string name="photo_saved_info">📸 Saved: %1$s (%2$dKB)</string>
+    <string name="select_stream_method">Select Stream Method</string>
+    <string name="direct_mode_option">📡 Direct Mode (Recommended, no server needed)</string>
+    <string name="rtmp_mode_option">🌐 RTMP Mode (Requires server)</string>
+    <string name="rtmp_url_hint">rtmp://server/app/stream</string>
+    <string name="rtmp_stream_settings">🌐 RTMP Stream Settings</string>
+    <string name="rtmp_input_message">Enter RTMP stream URL\n\nSupported servers:\n• SRS: rtmp://IP/live/stream\n• nginx-rtmp: rtmp://IP/live/stream\n\nTip: Configure default URL in settings</string>
+    <string name="start_stream">Start Stream</string>
+    <string name="client_connected">Client connected</string>
+    <string name="waiting_connection">Waiting for connection…</string>
+    <string name="error_status">Error</string>
+    <string name="stream_failed_title">❌ Stream Failed</string>
+    <string name="stream_error_details">Error:\n%1$s\n\nPossible causes:\n1. Camera in use by another app\n2. Audio permission not granted\n3. Network configuration issue</string>
+    <string name="view_log">View Log</string>
+    <string name="close">Close</string>
+    <string name="step_switch_mode">Step 1/4: Switching to stream mode…</string>
+    <string name="step_wait_surface">Step 2/4: Waiting for Surface…</string>
+    <string name="step_init_encoder">Step 3/4: Initializing encoder…</string>
+    <string name="step_start_preview_server">Step 4/4: Starting preview and RTSP server…</string>
+    <string name="direct_service_started">✅ Direct service started</string>
+    <string name="stream_success_title">🎉 Stream Started!</string>
+    <string name="rtsp_started_message">RTSP service started\n\n📍 URL: %1$s\n\n📺 Open this URL on PC with VLC to watch\n\n⚠️ Note: If audio init fails, only video will be streamed</string>
+    <string name="copy_address">Copy Address</string>
+    <string name="generate_webpage">Generate Webpage</string>
+    <string name="rtsp_start_failed">Failed to start RTSP server\n\nPossible cause: Port 8554 occupied or network permission denied</string>
+    <string name="exception_error">Exception: %1$s\n%2$s</string>
+    <string name="failed_status">Failed</string>
+    <string name="retry">Retry</string>
+    <string name="debug_info_title">📋 Debug Info</string>
+    <string name="ok">OK</string>
+    <string name="got_it">Got it</string>
+    <string name="releasing_resources">Releasing stream resources…</string>
+    <string name="reinitializing_camerax">Re-initializing CameraX…</string>
+    <string name="front_camera">Front</string>
+    <string name="rear_camera">Rear</string>
+    <string name="camera_switched">Switched</string>
+    <string name="stop_dual_recording">⏹ Stop Dual</string>
+    <string name="stop_recording_btn">⏹ Stop Recording</string>
+    <string name="start_dual_recording">▶️ Start Dual</string>
+    <string name="start_recording_btn">⏺ Start Recording</string>
+    <string name="stop_streaming_btn">■ Stop Stream</string>
+    <string name="start_streaming_btn">▶ Start Stream</string>
+    <string name="stream_failed_status">Stream Failed</string>
+    <string name="connecting_to_server">Connecting to server…</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="step_rtmp_1">Step 1/3: Switching to stream mode…</string>
+    <string name="step_rtmp_2">Step 2/3: Waiting for Surface…</string>
+    <string name="step_rtmp_3">Step 3/3: Initializing RTMP encoder and starting stream…</string>
+    <string name="streaming_status">Streaming</string>
+    <string name="direct_mode_title">🎯 Direct Mode - P2P Video Transfer</string>
+    <string name="direct_stream_info">✅ Direct service started! No relay server needed\n\n📍 Local IP: %1$s\n\n📺 How other devices can connect:\n\n【Method 1】VLC Player (Recommended)\nOpen VLC → Media → Open Network Stream → Enter:\n%2$s\n\n【Method 2】ffplay command line\nffplay %2$s\n\n【Method 3】Another phone\nUse VLC App or this app\'s player to open the URL above\n\n⚠️ Ensure all devices are on the same WiFi network</string>
+    <string name="generate_web_player">Generate Web Player</string>
+    <string name="surface_timeout_details">Surface creation timeout\n\nPossible causes:\n1. SurfaceView not displayed correctly\n2. Layout abnormality</string>
+    <string name="encoder_init_failed">Video encoder initialization failed\n\nPossible causes:\n1. Camera in use by another app\n2. Device doesn\'t support resolution/framerate config\n3. Insufficient memory</string>
+
+    <!-- Camera names -->
+    <string name="front_camera_name">Front Camera</string>
+    <string name="rear_camera_name">Rear Camera</string>
+</resources>

@@ -24,6 +24,7 @@ import com.andwin.video.service.StreamService
 import com.andwin.video.streamer.StreamPublisher
 import com.andwin.video.streamer.DirectStreamServer
 import com.andwin.video.streamer.TimeWatermarkView
+import com.andwin.video.utils.LocaleHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,6 +34,10 @@ import java.util.Date
 import java.util.Locale
 
 class MonitorActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: android.content.Context?) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase!!, LocaleHelper.getLocale(newBase)))
+    }
 
     private lateinit var binding: ActivityMonitorBinding
     private lateinit var cameraManager: CameraManager
@@ -105,7 +110,7 @@ class MonitorActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.btnRecordContainer.setOnClickListener {
             if (!isCameraReady) {
-                Toast.makeText(this, "摄像头正在初始化，请稍候...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.camera_initializing), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             toggleRecording()
@@ -113,7 +118,7 @@ class MonitorActivity : AppCompatActivity() {
 
         binding.btnStreamContainer.setOnClickListener {
             if (!isCameraReady) {
-                Toast.makeText(this, "摄像头正在初始化，请稍候...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.camera_initializing), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             showStreamDialog()
@@ -126,7 +131,7 @@ class MonitorActivity : AppCompatActivity() {
 
         binding.btnCapture.setOnClickListener {
             if (!isCameraReady) {
-                Toast.makeText(this, "摄像头正在初始化，请稍候...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.camera_initializing), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             capturePhoto()
@@ -134,7 +139,7 @@ class MonitorActivity : AppCompatActivity() {
 
         binding.btnDualCamera.setOnClickListener {
             if (!isCameraReady) {
-                Toast.makeText(this, "摄像头正在初始化，请稍候...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.camera_initializing), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             toggleDualCameraMode()
@@ -157,14 +162,14 @@ class MonitorActivity : AppCompatActivity() {
                     isCameraReady = true
                     updateUIForLoadingState(false)
                     runOnUiThread {
-                        binding.tvStatus.text = "就绪"
+                        binding.tvStatus.text = getString(R.string.ready)
                         
                         val hasMultipleCameras = cameraManager.hasMultipleCameras()
                         if (hasMultipleCameras) {
                             binding.btnDualCamera.visibility = View.VISIBLE
-                            binding.tvHint.text = "点击红色按钮开始录制 | 紫色按钮尝试双摄"
+                            binding.tvHint.text = getString(R.string.hint_record_with_dual)
                         } else {
-                            binding.tvHint.text = "点击红色按钮开始录制 | 本设备只有一个摄像头"
+                            binding.tvHint.text = getString(R.string.hint_single_camera)
                             binding.btnDualCamera.alpha = 0.3f
                             binding.btnDualCamera.isEnabled = false
                         }
@@ -173,16 +178,16 @@ class MonitorActivity : AppCompatActivity() {
                     isCameraReady = false
                     updateUIForLoadingState(false)
                     runOnUiThread {
-                        binding.tvStatus.text = "初始化失败"
-                        Toast.makeText(this@MonitorActivity, "摄像头初始化失败", Toast.LENGTH_LONG).show()
+                        binding.tvStatus.text = getString(R.string.init_failed)
+                        Toast.makeText(this@MonitorActivity, getString(R.string.camera_init_failed), Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: Exception) {
                 isCameraReady = false
                 updateUIForLoadingState(false)
                 runOnUiThread {
-                    binding.tvStatus.text = "错误: ${e.message}"
-                    Toast.makeText(this@MonitorActivity, "摄像头错误: ${e.message}", Toast.LENGTH_LONG).show()
+                    binding.tvStatus.text = String.format(getString(R.string.camera_error), e.message ?: "")
+                    Toast.makeText(this@MonitorActivity, String.format(getString(R.string.camera_error), e.message ?: ""), Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -207,7 +212,7 @@ class MonitorActivity : AppCompatActivity() {
                 binding.previewViewBack.visibility = View.GONE
                 binding.dualCameraIndicator.visibility = View.GONE
                 cameraManager.startCamera(binding.previewView, cameraConfig.cameraId, resolution)
-                Toast.makeText(this, "本设备不支持双摄模式，已切换到单摄", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.no_dual_camera_support), Toast.LENGTH_SHORT).show()
             }
         } else {
             cameraManager.startCamera(binding.previewView, cameraConfig.cameraId, resolution)
@@ -219,7 +224,7 @@ class MonitorActivity : AppCompatActivity() {
      */
     private fun toggleDualCameraMode() {
         if (isRecording || isStreaming) {
-            Toast.makeText(this, "请先停止录制/推流后再切换模式", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.stop_before_mode_switch), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -241,21 +246,21 @@ class MonitorActivity : AppCompatActivity() {
                         this@MonitorActivity, 
                         android.R.color.holo_purple
                     )
-                    binding.tvResolutionInfo.text = "双摄模式 | 前置+后置"
-                    Toast.makeText(this@MonitorActivity, "✅ 已开启双摄模式（前后同时录制）", Toast.LENGTH_SHORT).show()
+                    binding.tvResolutionInfo.text = getString(R.string.dual_mode_info)
+                    Toast.makeText(this@MonitorActivity, getString(R.string.dual_mode_enabled), Toast.LENGTH_SHORT).show()
                 } else {
                     binding.btnDualCamera.backgroundTintList = ContextCompat.getColorStateList(
                         this@MonitorActivity, 
                         R.color.primary
                     )
                     binding.tvResolutionInfo.text = "${cameraConfig.resolution.width}×${cameraConfig.resolution.height} @ ${cameraConfig.fps}fps"
-                    Toast.makeText(this@MonitorActivity, "已关闭双摄模式", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MonitorActivity, getString(R.string.dual_mode_disabled), Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 isDualMode = !isDualMode
                 isCameraReady = false
                 updateUIForLoadingState(false)
-                Toast.makeText(this@MonitorActivity, "切换失败: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MonitorActivity, String.format(getString(R.string.mode_switch_failed), e.message ?: ""), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -271,7 +276,7 @@ class MonitorActivity : AppCompatActivity() {
             binding.btnDualCamera.isEnabled = enabled
 
             if (isLoading) {
-                binding.tvStatus.text = "正在初始化摄像头..."
+                binding.tvStatus.text = getString(R.string.initializing_camera)
                 binding.statusDot.setBackgroundResource(R.drawable.circle_status_ready)
 
                 binding.btnRecordContainer.alpha = 0.5f
@@ -316,7 +321,7 @@ class MonitorActivity : AppCompatActivity() {
                 onComplete = { outputFile ->
                     runOnUiThread {
                         val sizeKB = outputFile.length() / 1024
-                        val msg = "🎬 视频已保存: ${outputFile.name} (${sizeKB}KB)"
+                        val msg = String.format(getString(R.string.video_saved_with_info), outputFile.name, sizeKB)
                         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
                         
                         Log.i("MonitorActivity", "✅ 视频录制完成!")
@@ -328,7 +333,7 @@ class MonitorActivity : AppCompatActivity() {
                 onError = { error ->
                     runOnUiThread {
                         Log.e("MonitorActivity", "❌ 视频录制失败: $error")
-                        Toast.makeText(this, "视频录制失败: $error\n尝试拍照模式...", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, String.format(getString(R.string.record_failed), error), Toast.LENGTH_LONG).show()
                         
                         // 回退到拍照模式
                         startPhotoMode()
@@ -364,7 +369,7 @@ class MonitorActivity : AppCompatActivity() {
         }
         
         if (imageCapture == null) {
-            Toast.makeText(this, "摄像头未就绪", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.camera_not_ready), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -373,7 +378,7 @@ class MonitorActivity : AppCompatActivity() {
             onComplete = { outputFile ->
                 runOnUiThread {
                     val sizeKB = outputFile.length() / 1024
-                    val msg = "📸 已保存: ${outputFile.name} (${sizeKB}KB)"
+                    val msg = String.format(getString(R.string.photo_saved_info), outputFile.name, sizeKB)
                     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
                     
                     Log.i("MonitorActivity", "✅ 拍照完成: ${outputFile.absolutePath}")
@@ -446,19 +451,19 @@ class MonitorActivity : AppCompatActivity() {
 
     private fun showStreamDialog() {
         val options = arrayOf(
-            "📡 直连模式 (推荐，无需服务器)",
-            "🌐 RTMP 推流模式 (需要服务器)"
+            getString(R.string.direct_mode_option),
+            getString(R.string.rtmp_mode_option)
         )
         
         AlertDialog.Builder(this)
-            .setTitle("选择推流方式")
+            .setTitle(getString(R.string.select_stream_method))
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> startDirectStream()
                     1 -> showRtmpInputDialog()
                 }
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
     
@@ -468,28 +473,24 @@ class MonitorActivity : AppCompatActivity() {
         val defaultRtmpUrl = sharedPreferences.getString("default_rtmp_url", "") ?: ""
         
         val editText = EditText(this).apply {
-            hint = "rtmp://服务器地址/应用/流名"
+            hint = getString(R.string.rtmp_url_hint)
             // 优先使用 cameraConfig 中的地址，如果没有就用默认地址
             setText(if (cameraConfig.streamUrl.isNotEmpty()) cameraConfig.streamUrl else defaultRtmpUrl)
         }
 
         AlertDialog.Builder(this)
-            .setTitle("🌐 RTMP 推流设置")
-            .setMessage("输入 RTMP 推流地址\n\n" +
-                    "支持的服务器：\n" +
-                    "• SRS: rtmp://IP/live/stream\n" +
-                    "• nginx-rtmp: rtmp://IP/live/stream\n\n" +
-                    "提示：在设置中可以配置默认地址")
+            .setTitle(getString(R.string.rtmp_stream_settings))
+            .setMessage(getString(R.string.rtmp_input_message))
             .setView(editText)
-            .setPositiveButton("开始推流") { _, _ ->
+            .setPositiveButton(getString(R.string.start_stream)) { _, _ ->
                 val url = editText.text.toString().trim()
                 if (url.isNotEmpty()) {
                     startStreaming(url)
                 } else {
-                    Toast.makeText(this, "请输入推流地址", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.enter_rtmp_url), Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
@@ -497,12 +498,12 @@ class MonitorActivity : AppCompatActivity() {
 
     private fun startDirectStream() {
         if (isStreaming) {
-            Toast.makeText(this, "已在推流中，请先停止", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.already_streaming_stop_first), Toast.LENGTH_SHORT).show()
             return
         }
 
         if (isRecording) {
-            Toast.makeText(this, "请先停止录制再开始推流", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.stop_record_before_stream), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -515,14 +516,14 @@ class MonitorActivity : AppCompatActivity() {
         directStreamServer.clientConnectedCallback = { clientInfo ->
             runOnUiThread {
                 Log.i("MonitorActivity", "客户端已连接: $clientInfo")
-                binding.tvStatus.text = "客户端已连接"
+                binding.tvStatus.text = getString(R.string.client_connected)
             }
         }
 
         directStreamServer.clientDisconnectedCallback = {
             runOnUiThread {
                 Log.i("MonitorActivity", "客户端断开连接")
-                binding.tvStatus.text = "等待连接..."
+                binding.tvStatus.text = getString(R.string.waiting_connection)
             }
         }
 
@@ -531,15 +532,15 @@ class MonitorActivity : AppCompatActivity() {
                 isStreaming = false
                 updateStreamButton(false)
                 binding.streamingIndicator.visibility = View.GONE
-                binding.tvStatus.text = "错误"
+                binding.tvStatus.text = getString(R.string.error_status)
 
                 AlertDialog.Builder(this)
-                    .setTitle("❌ 推流失败")
-                    .setMessage("错误信息:\n$error\n\n可能的原因:\n1. 摄像头被其他应用占用\n2. 音频权限未授予\n3. 网络配置问题")
-                    .setPositiveButton("查看日志") { _, _ ->
+                    .setTitle(getString(R.string.stream_failed_title))
+                    .setMessage(String.format(getString(R.string.stream_error_details), error))
+                    .setPositiveButton(getString(R.string.view_log)) { _, _ ->
                         showLogInfo()
                     }
-                    .setNegativeButton("关闭", null)
+                    .setNegativeButton(getString(R.string.close), null)
                     .show()
 
                 switchToCameraXPreview()
@@ -556,33 +557,33 @@ class MonitorActivity : AppCompatActivity() {
         streamJob = lifecycleScope.launch {
             try {
                 // Phase 1: 切换到推流模式（不阻塞主线程）
-                binding.tvStatus.text = "步骤1/4: 切换到推流模式..."
+                binding.tvStatus.text = getString(R.string.step_switch_mode)
                 switchToStreamPreviewNonBlocking()
 
                 // Phase 2: 等待 Surface 创建（非阻塞）
-                binding.tvStatus.text = "步骤2/4: 等待Surface创建..."
+                binding.tvStatus.text = getString(R.string.step_wait_surface)
                 val surfaceReady = directStreamServer.waitForSurface(10000)
 
                 if (!surfaceReady) {
-                    handleError("Surface 创建超时\n\n可能原因:\n1. SurfaceView 未正确显示\n2. 布局异常")
+                    handleError(getString(R.string.surface_timeout_details))
                     return@launch
                 }
 
                 logSurfaceSize("Surface已就绪")
 
                 // Phase 3: 初始化编码器并启动预览
-                binding.tvStatus.text = "步骤3/4: 初始化编码器..."
+                binding.tvStatus.text = getString(R.string.step_init_encoder)
                 val success = withContext(kotlinx.coroutines.Dispatchers.IO) {
                     directStreamServer.initialize()
                 }
 
                 if (!success) {
-                    handleError("视频编码器初始化失败\n\n可能原因:\n1. 摄像头被其他应用占用\n2. 设备不支持该分辨率/帧率配置\n3. 内存不足")
+                    handleError(getString(R.string.encoder_init_failed))
                     return@launch
                 }
 
                 // Phase 4: 启动预览和服务器
-                binding.tvStatus.text = "步骤4/4: 启动摄像头预览和RTSP服务..."
+                binding.tvStatus.text = getString(R.string.step_start_preview_server)
                 val useFrontCamera = cameraConfig.cameraId == "0"
                 
                 val serverSuccess = withContext(kotlinx.coroutines.Dispatchers.IO) {
@@ -595,25 +596,22 @@ class MonitorActivity : AppCompatActivity() {
                     isStreaming = true
                     updateStreamButton(true)
                     binding.streamingIndicator.visibility = View.VISIBLE
-                    binding.tvStatus.text = "✅ 直连服务已启动"
+                    binding.tvStatus.text = getString(R.string.direct_service_started)
                     binding.statusDot.setBackgroundResource(R.drawable.circle_recording_pulse)
 
                     val url = directStreamServer.getRtspUrl()
 
                     AlertDialog.Builder(this@MonitorActivity)
-                        .setTitle("🎉 推流成功！")
-                        .setMessage("RTSP 服务已启动\n\n" +
-                                "📍 地址: $url\n\n" +
-                                "📺 在电脑上用 VLC 打开此地址即可观看\n\n" +
-                                "⚠️ 注意: 如果音频初始化失败，将只推送视频流")
-                        .setPositiveButton("复制地址") { _, _ ->
+                        .setTitle(getString(R.string.stream_success_title))
+                        .setMessage(String.format(getString(R.string.rtsp_started_message), url))
+                        .setPositiveButton(getString(R.string.copy_address)) { _, _ ->
                             copyToClipboard(url)
-                            Toast.makeText(this@MonitorActivity, "已复制到剪贴板", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MonitorActivity, getString(R.string.copied_success_emoji), Toast.LENGTH_SHORT).show()
                         }
-                        .setNeutralButton("生成网页") { _, _ ->
+                        .setNeutralButton(getString(R.string.generate_webpage)) { _, _ ->
                             generateWebPlayerPage(url)
                         }
-                        .setNegativeButton("关闭", null)
+                        .setNegativeButton(getString(R.string.close), null)
                         .show()
 
                     Log.i("MonitorActivity", "========================================")
@@ -621,12 +619,12 @@ class MonitorActivity : AppCompatActivity() {
                     Log.i("MonitorActivity", "   RTSP URL: $url")
                     Log.i("MonitorActivity", "========================================")
                 } else {
-                    handleError("启动 RTSP 服务器失败\n\n可能原因: 端口 8554 被占用或网络权限不足")
+                    handleError(getString(R.string.rtsp_start_failed))
                 }
             } catch (e: Exception) {
                 Log.e("MonitorActivity", "Direct stream error", e)
                 e.printStackTrace()
-                handleError("异常: ${e.javaClass.simpleName}\n${e.message}")
+                handleError(String.format(getString(R.string.exception_error), e.javaClass.simpleName, e.message ?: ""))
             }
         }
     }
@@ -636,15 +634,15 @@ class MonitorActivity : AppCompatActivity() {
             isStreaming = false
             updateStreamButton(false)
             binding.streamingIndicator.visibility = View.GONE
-            binding.tvStatus.text = "失败"
+            binding.tvStatus.text = getString(R.string.failed_status)
             
             AlertDialog.Builder(this)
-                .setTitle("❌ 推流失败")
+                .setTitle(getString(R.string.stream_failed_title))
                 .setMessage(message)
-                .setPositiveButton("重试") { _, _ ->
+                .setPositiveButton(getString(R.string.retry)) { _, _ ->
                     startDirectStream()
                 }
-                .setNegativeButton("取消", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
                 
             switchToCameraXPreview()
@@ -671,46 +669,28 @@ class MonitorActivity : AppCompatActivity() {
         """.trimIndent()
         
         AlertDialog.Builder(this)
-            .setTitle("📋 调试信息")
+            .setTitle(getString(R.string.debug_info_title))
             .setMessage(logMsg)
-            .setPositiveButton("确定", null)
+            .setPositiveButton(getString(R.string.ok), null)
             .show()
     }
     
     private fun showDirectStreamInfo(rtspUrl: String) {
         val ip = directStreamServer.getLocalIpAddress()
         
-        val message = """
-            ✅ 直连服务已启动！无需任何中转服务器
-            
-            📍 本机 IP: $ip
-            
-            📺 其他设备连接方式：
-            
-            【方式1】VLC 播放器（推荐）
-            打开 VLC → 媒体 → 打开网络串流 → 输入:
-            $rtspUrl
-            
-            【方式2】ffplay 命令行
-            ffplay $rtspUrl
-            
-            【方式3】另一部手机
-            使用 VLC App 或本App播放器打开上述地址
-            
-            ⚠️ 确保所有设备在同一 WiFi 网络
-        """.trimIndent()
+        val message = String.format(getString(R.string.direct_stream_info), ip, rtspUrl)
         
         AlertDialog.Builder(this)
-            .setTitle("🎯 直连模式 - P2P 视频传输")
+            .setTitle(getString(R.string.direct_mode_title))
             .setMessage(message)
-            .setPositiveButton("复制地址") { _, _ ->
+            .setPositiveButton(getString(R.string.copy_address)) { _, _ ->
                 copyToClipboard(rtspUrl)
-                Toast.makeText(this, "✅ 已复制到剪贴板", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.copied_success_emoji), Toast.LENGTH_SHORT).show()
             }
-            .setNeutralButton("生成网页播放器") { _, _ ->
+            .setNeutralButton(getString(R.string.generate_web_player)) { _, _ ->
                 generateWebPlayerPage(rtspUrl)
             }
-            .setNegativeButton("知道了", null)
+            .setNegativeButton(getString(R.string.got_it), null)
             .show()
     }
     
@@ -796,23 +776,23 @@ class MonitorActivity : AppCompatActivity() {
             val file = File(getExternalFilesDir(null), fileName)
             file.writeText(htmlContent, Charsets.UTF_8)
             
-            Toast.makeText(this, "📄 网页已保存: ${file.name}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, String.format(getString(R.string.webpage_saved), file.name), Toast.LENGTH_LONG).show()
             Log.i("MonitorActivity", "HTML player saved to: ${file.absolutePath}")
             
         } catch (e: Exception) {
             Log.e("MonitorActivity", "Generate HTML failed", e)
-            Toast.makeText(this, "生成网页失败: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, String.format(getString(R.string.webpage_save_failed), e.message ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun startStreaming(url: String) {
         if (isStreaming) {
-            Toast.makeText(this, "已在推流中，请先停止", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.already_streaming_stop_first), Toast.LENGTH_SHORT).show()
             return
         }
 
         if (isRecording) {
-            Toast.makeText(this, "请先停止录制再开始推流", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.stop_record_before_stream), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -821,16 +801,16 @@ class MonitorActivity : AppCompatActivity() {
                 isStreaming = false
                 updateStreamButton(false)
                 binding.streamingIndicator.visibility = View.GONE
-                binding.tvStatus.text = "推流失败"
-                Toast.makeText(this, "❌ 连接失败: $reason", Toast.LENGTH_LONG).show()
+                binding.tvStatus.text = getString(R.string.stream_failed_status)
+                Toast.makeText(this, String.format(getString(R.string.connection_failed), reason), Toast.LENGTH_LONG).show()
                 switchToCameraXPreview()
             }
         }
 
         streamPublisher.onConnectionStarted = {
             runOnUiThread {
-                binding.tvStatus.text = "正在连接服务器..."
-                Toast.makeText(this, "🔄 正在建立连接...", Toast.LENGTH_SHORT).show()
+                binding.tvStatus.text = getString(R.string.connecting_to_server)
+                Toast.makeText(this, getString(R.string.establishing_connection), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -839,9 +819,9 @@ class MonitorActivity : AppCompatActivity() {
                 isStreaming = true
                 updateStreamButton(true)
                 binding.streamingIndicator.visibility = View.VISIBLE
-                binding.tvStatus.text = "推流中"
+                binding.tvStatus.text = getString(R.string.streaming_status)
                 binding.statusDot.setBackgroundResource(R.drawable.circle_recording_pulse)
-                Toast.makeText(this, "✅ 推流成功！外部设备可查看", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.stream_started_success), Toast.LENGTH_LONG).show()
             }
         }
 
@@ -850,34 +830,34 @@ class MonitorActivity : AppCompatActivity() {
                 isStreaming = false
                 updateStreamButton(false)
                 binding.streamingIndicator.visibility = View.GONE
-                binding.tvStatus.text = "已断开"
+                binding.tvStatus.text = getString(R.string.disconnected)
                 binding.statusDot.setBackgroundResource(R.drawable.circle_status_ready)
-                Toast.makeText(this, "已停止推流", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.stream_stopped), Toast.LENGTH_SHORT).show()
                 switchToCameraXPreview()
             }
         }
 
         streamPublisher.onError = { error ->
             runOnUiThread {
-                Toast.makeText(this, "⚠️ 错误: $error", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, String.format(getString(R.string.stream_error), error), Toast.LENGTH_LONG).show()
             }
         }
 
         // 关键修复：使用协程，不阻塞主线程
         streamJob = lifecycleScope.launch {
             try {
-                binding.tvStatus.text = "步骤1/3: 切换到推流模式..."
+                binding.tvStatus.text = getString(R.string.step_rtmp_1)
                 switchToStreamPreviewNonBlocking()
 
-                binding.tvStatus.text = "步骤2/3: 等待Surface创建..."
+                binding.tvStatus.text = getString(R.string.step_rtmp_2)
                 val surfaceReady = directStreamServer.waitForSurface(10000)
                 if (!surfaceReady) {
-                    Toast.makeText(this@MonitorActivity, "Surface创建超时", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MonitorActivity, getString(R.string.surface_timeout), Toast.LENGTH_SHORT).show()
                     switchToCameraXPreview()
                     return@launch
                 }
 
-                binding.tvStatus.text = "步骤3/3: 初始化RTMP编码器并启动推流..."
+                binding.tvStatus.text = getString(R.string.step_rtmp_3)
                 val streamResult = withContext(Dispatchers.IO) {
                     val initOk = streamPublisher.initializeWithCamera(cameraConfig.cameraId)
                     if (initOk) {
@@ -897,7 +877,7 @@ class MonitorActivity : AppCompatActivity() {
                     isStreaming = true
                     updateStreamButton(true)
                     binding.streamingIndicator.visibility = View.VISIBLE
-                    binding.tvStatus.text = "推流中"
+                    binding.tvStatus.text = getString(R.string.streaming_status)
                     binding.statusDot.setBackgroundResource(R.drawable.circle_recording_pulse)
 
                     startStreamService(url)
@@ -906,14 +886,14 @@ class MonitorActivity : AppCompatActivity() {
                     Log.i("MonitorActivity", "   URL: $url")
                     Log.i("MonitorActivity", "========================================")
 
-                    Toast.makeText(this@MonitorActivity, "✅ RTMP 推流成功!\n$url", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MonitorActivity, String.format(getString(R.string.rtmp_stream_success), url), Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(this@MonitorActivity, "启动推流失败", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MonitorActivity, getString(R.string.rtmp_start_failed), Toast.LENGTH_SHORT).show()
                     switchToCameraXPreview()
                 }
             } catch (e: Exception) {
                 Log.e("MonitorActivity", "Start streaming error", e)
-                Toast.makeText(this@MonitorActivity, "推流异常: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MonitorActivity, String.format(getString(R.string.stream_exception), e.message ?: ""), Toast.LENGTH_LONG).show()
                 switchToCameraXPreview()
             }
         }
@@ -949,7 +929,7 @@ class MonitorActivity : AppCompatActivity() {
             Log.i("MonitorActivity", "═══ 切换回CameraX模式 ═══")
             
             // 步骤1: 完全释放 RootEncoder 资源
-            binding.tvStatus.text = "正在释放推流资源..."
+            binding.tvStatus.text = getString(R.string.releasing_resources)
             if (isDirectMode) {
                 directStreamServer.release()
                 directStreamServer = DirectStreamServer(this, binding.surfaceView)
@@ -974,7 +954,7 @@ class MonitorActivity : AppCompatActivity() {
                 kotlinx.coroutines.delay(500)
                 
                 // 步骤5: 重新初始化 CameraProvider
-                binding.tvStatus.text = "正在重新初始化CameraX..."
+                binding.tvStatus.text = getString(R.string.reinitializing_camerax)
                 val success = cameraManager.reinitialize()
                 
                 if (success) {
@@ -986,11 +966,11 @@ class MonitorActivity : AppCompatActivity() {
                     Log.d("MonitorActivity", "[4/4] CameraX已重启")
                     
                     Log.i("MonitorActivity", "═══ 切换回CameraX完成 ═══")
-                    binding.tvStatus.text = "就绪"
+                    binding.tvStatus.text = getString(R.string.ready)
                 } else {
                     Log.e("MonitorActivity", "CameraProvider 重新初始化失败")
                     runOnUiThread {
-                        Toast.makeText(this@MonitorActivity, "摄像头重新初始化失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MonitorActivity, getString(R.string.camera_reinit_failed), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -1018,7 +998,7 @@ class MonitorActivity : AppCompatActivity() {
             isDirectMode = false
             updateStreamButton(false)
             binding.streamingIndicator.visibility = View.GONE
-            binding.tvStatus.text = "就绪"
+            binding.tvStatus.text = getString(R.string.ready)
             binding.statusDot.setBackgroundResource(R.drawable.circle_status_ready)
             
             stopStreamService()
@@ -1026,7 +1006,7 @@ class MonitorActivity : AppCompatActivity() {
             // 恢复 CameraX 预览
             switchToCameraXPreview()
             
-            Toast.makeText(this, "已停止推流", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.stream_stopped), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Log.e("MonitorActivity", "Stop streaming error", e)
         }
@@ -1040,11 +1020,11 @@ class MonitorActivity : AppCompatActivity() {
                 streamPublisher.switchCamera()
             }
             val currentCamera = if (isDirectMode) {
-                if (directStreamServer.isUsingFrontCamera()) "前置" else "后置"
+                if (directStreamServer.isUsingFrontCamera()) getString(R.string.front_camera) else getString(R.string.rear_camera)
             } else {
-                "已切换"
+                getString(R.string.camera_switched)
             }
-            Toast.makeText(this, "已切换到${currentCamera}摄像头", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, String.format(getString(R.string.switched_to_camera), currentCamera), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -1064,7 +1044,7 @@ class MonitorActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 isCameraReady = false
                 updateUIForLoadingState(false)
-                Toast.makeText(this@MonitorActivity, "切换摄像头失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MonitorActivity, getString(R.string.switch_camera_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -1080,7 +1060,7 @@ class MonitorActivity : AppCompatActivity() {
             frontCap?.let { 
                 videoRecorder.takePhoto(it,
                     onComplete = { file -> 
-                        Toast.makeText(this, "📷 前置照片已保存", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.front_photo_saved), Toast.LENGTH_SHORT).show()
                     },
                     onError = { error ->
                         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
@@ -1090,7 +1070,7 @@ class MonitorActivity : AppCompatActivity() {
             backCap?.let {
                 videoRecorder.takePhoto(it,
                     onComplete = { file ->
-                        Toast.makeText(this, "📷 后置照片已保存", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.rear_photo_saved), Toast.LENGTH_SHORT).show()
                     },
                     onError = { error ->
                         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
@@ -1107,13 +1087,13 @@ class MonitorActivity : AppCompatActivity() {
         }
         
         if (imageCapture == null) {
-            Toast.makeText(this, "摄像头未就绪", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.camera_not_ready), Toast.LENGTH_SHORT).show()
             return
         }
 
         videoRecorder.takePhoto(imageCapture,
             onComplete = { file ->
-                Toast.makeText(this, "📷 照片已保存: ${file.name}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, String.format(getString(R.string.photo_saved_with_name), file.name), Toast.LENGTH_SHORT).show()
             },
             onError = { error ->
                 Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
@@ -1122,18 +1102,18 @@ class MonitorActivity : AppCompatActivity() {
 
     private fun updateRecordButton(recording: Boolean) {
         if (recording) {
-            binding.btnRecordText.text = if (isDualMode) "⏹ 停止双录" else "⏹ 停止录制"
+            binding.btnRecordText.text = if (isDualMode) getString(R.string.stop_dual_recording) else getString(R.string.stop_recording_btn)
             binding.recordDot.setBackgroundResource(R.drawable.circle_recording_pulse)
             binding.recordingIndicator.visibility = View.VISIBLE
         } else {
-            binding.btnRecordText.text = if (isDualMode) "▶️ 开始双录" else "⏺ 开始录制"
+            binding.btnRecordText.text = if (isDualMode) getString(R.string.start_dual_recording) else getString(R.string.start_recording_btn)
             binding.recordDot.setBackgroundResource(R.drawable.circle_record_idle)
             binding.recordingIndicator.visibility = View.GONE
         }
     }
 
     private fun updateStreamButton(streaming: Boolean) {
-        binding.btnStreamText.text = if (streaming) "■ 停止推流" else "▶ 开始推流"
+        binding.btnStreamText.text = if (streaming) getString(R.string.stop_streaming_btn) else getString(R.string.start_streaming_btn)
         binding.btnStreamContainer.setCardBackgroundColor(
             ContextCompat.getColorStateList(this, if (streaming) android.R.color.holo_red_dark else R.color.secondary)
         )
