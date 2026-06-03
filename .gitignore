@@ -25,7 +25,9 @@ build/
 local.properties
 
 # Signing files
- signing.keystore
+signing.keystore
+*.keystore
+keystore.properties
 
 # OS-specific files
 .DS_Store
