@@ -82,27 +82,33 @@ Camera Stream Monitor is a powerful Android application for real-time video stre
 
 ## 📱 Screenshots / 应用截图
 
-### Main Interface / 主界面
-- Camera list with device information
-- 带设备信息的摄像头列表
-- Quick action buttons for common operations
-- 常用操作的快捷按钮
+### 1. Main Interface / 主界面 — 摄像头列表
+<p align="center">
+<img src="docs/screenshot/screenshot-1.png" width="300" alt="主界面"/>
+</p>
 
-### Monitor Interface / 监控界面
-- Real-time video preview
-- 实时视频预览
-- Stream control buttons
-- 推流控制按钮
-- Quality settings adjustment
-- 质量设置调整
+Camera list with device information — 前置/后置摄像头管理，实时状态显示
 
-### Settings Interface / 设置界面
-- Stream configuration options
-- 推流配置选项
-- Recording preferences
-- 录制偏好设置
-- Network settings
-- 网络设置
+### 2. Player / 播放器 — 远程观看
+<p align="center">
+<img src="docs/screenshot/screenshot-2.png" width="300" alt="播放器"/>
+</p>
+
+Stream player with multi-protocol support (RTMP / RTSP / HLS / DASH) — 支持多种流媒体协议输入
+
+### 3. Settings / 设置
+<p align="center">
+<img src="docs/screenshot/screenshot-3.png" width="300" alt="设置"/>
+</p>
+
+Video quality, storage, streaming & language settings — 视频/存储/推流/语言配置
+
+### 4. Recordings / 录制记录
+<p align="center">
+<img src="docs/screenshot/screenshot-4.png" width="300" alt="录制记录"/>
+</p>
+
+Recording management and playback — 录制文件管理与回放
 
 ---
 
