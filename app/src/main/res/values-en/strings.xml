@@ -127,6 +127,7 @@
     <string name="settings_category_video">Video Settings</string>
     <string name="settings_category_storage">Storage Settings</string>
     <string name="settings_category_stream">Stream Settings</string>
+    <string name="settings_category_webdav">WebDAV Cloud Storage</string>
     <string name="settings_category_language">Language &amp; Region</string>
     <string name="settings_category_about">About</string>
 
@@ -136,7 +137,7 @@
     <string name="settings_bitrate">Bitrate (bps)</string>
     <string name="settings_storage_path">Storage Path</string>
     <string name="settings_auto_delete">Auto-delete old recordings</string>
-    <string name="settings_auto_delete_summary">Delete recordings older than 30 days</string>
+    <string name="settings_auto_delete_summary">Auto-delete recordings older than the specified number of days</string>
     <string name="settings_default_rtmp">Default RTMP URL</string>
     <string name="settings_enable_audio">Enable audio streaming</string>
     <string name="settings_version">Version</string>
@@ -208,4 +209,46 @@
     <!-- Camera names -->
     <string name="front_camera_name">Front Camera</string>
     <string name="rear_camera_name">Rear Camera</string>
+
+    <!-- WebDAV Settings -->
+    <string name="settings_webdav_server">WebDAV Server URL</string>
+    <string name="settings_webdav_server_summary">Enter WebDAV server address, e.g. https://nas.example.com:5005/dav</string>
+    <string name="settings_webdav_server_dialog_hint">WebDAV Server URL format:\n\nhttps://server-address[:port]/path\n\nExamples (common NAS):\n• Synology: https://nas-ip:5005\n• QNAP: https://nas-ip:5006\n• Nextcloud: https://nc.example.com/remote.php/dav/files/username/\n• Nutstore: https://dav.jianguoyun.com/dav/</string>
+    <string name="settings_webdav_username">Username</string>
+    <string name="settings_webdav_password">Password</string>
+    <string name="settings_webdav_remote_path">Remote Storage Path</string>
+    <string name="settings_webdav_remote_path_summary">Target directory for uploaded recordings on the server</string>
+    <string name="settings_webdav_test_connection">Test Connection</string>
+    <string name="settings_webdav_test_connection_summary">Verify WebDAV server connection and credentials</string>
+    <string name="settings_webdav_auto_upload">Auto-upload after recording</string>
+    <string name="settings_webdav_auto_upload_summary">Automatically sync recordings to WebDAV server after each recording completes</string>
+
+    <!-- WebDAV Actions -->
+    <string name="webdav_upload_title">Upload to WebDAV</string>
+    <string name="webdav_upload_all">Upload All to WebDAV</string>
+    <string name="webdav_uploading">Uploading %1$s… (%2$d/%3$d)</string>
+    <string name="webdav_upload_success">✅ Upload successful: %1$s</string>
+    <string name="webdav_upload_failed">❌ Upload failed: %1$s</string>
+    <string name="webdav_upload_complete">Upload complete: %1$d succeeded, %2$d total files</string>
+    <string name="webdav_upload_progress" formatted="false">%1$s / %2$s (%3.0f%%)</string>
+    <string name="webdav_not_configured">Please configure WebDAV server in Settings first</string>
+    <string name="webdav_connecting">Connecting to WebDAV server…</string>
+    <string name="webdav_connection_success">WebDAV connected successfully!</string>
+    <string name="webdav_connection_failed">WebDAV connection failed: %1$s</string>
+    <string name="webdav_no_files">No files to upload</string>
+    <string name="webdav_upload_single_confirm">Upload \"%1$s\" to WebDAV server?</string>
+    <string name="webdav_upload_all_confirm">Upload all %1$d recording files to WebDAV server?</string>
+    <string name="webdav_list_remote">View Remote Files</string>
+    <string name="webdav_remote_files">Remote File List</string>
+    <string name="webdav_no_remote_files">Remote directory is empty</string>
+    <string name="webdav_delete_remote_confirm">Delete remote file \"%1$s\"?</string>
+    <string name="webdav_deleted_remote">Deleted remote file: %1$s</string>
+
+    <!-- Auto-delete & Background Recording -->
+    <string name="auto_delete_completed">Auto-cleaned: deleted %1$d recordings older than %2$d days</string>
+    <string name="settings_background_recording">Background continuous recording</string>
+    <string name="settings_background_recording_summary">Keep recording when app is in background, continue after screen off</string>
+    <string name="settings_prevent_sleep">Prevent sleep during recording</string>
+    <string name="settings_prevent_sleep_summary">Block system sleep and power saving during recording to ensure continuous capture</string>
+    <string name="recording_in_background">Recording in background…</string>
 </resources>

@@ -30,11 +30,25 @@
             android:title="@string/settings_storage_path"
             android:defaultValue="/Movies/VideoMonitor" />
 
-        <SwitchPreferenceCompat
-            android:key="auto_delete_old_videos"
+        <ListPreference
+            android:key="auto_delete_days"
             android:title="@string/settings_auto_delete"
             android:summary="@string/settings_auto_delete_summary"
-            android:defaultValue="false" />
+            android:defaultValue="0"
+            android:entries="@array/auto_delete_days_entries"
+            android:entryValues="@array/auto_delete_days_values" />
+
+        <SwitchPreferenceCompat
+            android:key="background_recording"
+            android:title="@string/settings_background_recording"
+            android:summary="@string/settings_background_recording_summary"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="prevent_sleep_during_recording"
+            android:title="@string/settings_prevent_sleep"
+            android:summary="@string/settings_prevent_sleep_summary"
+            android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_category_stream">
@@ -48,6 +62,44 @@
             android:key="enable_audio_streaming"
             android:title="@string/settings_enable_audio"
             android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_category_webdav">
+
+        <EditTextPreference
+            android:key="webdav_server_url"
+            android:title="@string/settings_webdav_server"
+            android:summary="@string/settings_webdav_server_summary"
+            android:defaultValue=""
+            android:dialogMessage="@string/settings_webdav_server_dialog_hint" />
+
+        <EditTextPreference
+            android:key="webdav_username"
+            android:title="@string/settings_webdav_username"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="webdav_password"
+            android:title="@string/settings_webdav_password"
+            android:inputType="textPassword"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="webdav_remote_path"
+            android:title="@string/settings_webdav_remote_path"
+            android:summary="@string/settings_webdav_remote_path_summary"
+            android:defaultValue="/VideoMonitor" />
+
+        <Preference
+            android:key="webdav_test_connection"
+            android:title="@string/settings_webdav_test_connection"
+            android:summary="@string/settings_webdav_test_connection_summary" />
+
+        <SwitchPreferenceCompat
+            android:key="webdav_auto_upload"
+            android:title="@string/settings_webdav_auto_upload"
+            android:summary="@string/settings_webdav_auto_upload_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_category_language">

@@ -323,11 +323,14 @@ class MonitorActivity : AppCompatActivity() {
                         val sizeKB = outputFile.length() / 1024
                         val msg = String.format(getString(R.string.video_saved_with_info), outputFile.name, sizeKB)
                         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-                        
+
                         Log.i("MonitorActivity", "✅ 视频录制完成!")
-                        
+
                         stopRecordingTimer()
                         updateRecordButton(false)
+
+                        // 录制完成后自动清理旧录像
+                        performAutoDelete()
                     }
                 },
                 onError = { error ->
@@ -380,11 +383,14 @@ class MonitorActivity : AppCompatActivity() {
                     val sizeKB = outputFile.length() / 1024
                     val msg = String.format(getString(R.string.photo_saved_info), outputFile.name, sizeKB)
                     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-                    
+
                     Log.i("MonitorActivity", "✅ 拍照完成: ${outputFile.absolutePath}")
-                    
+
                     stopRecordingTimer()
                     updateRecordButton(false)
+
+                    // 录制完成后自动清理旧录像
+                    performAutoDelete()
                 }
             },
             onError = { error ->
@@ -447,6 +453,41 @@ class MonitorActivity : AppCompatActivity() {
     private fun stopRecordingTimer() {
         recordingTimerRunnable?.let { binding.tvRecordingTime.removeCallbacks(it) }
         recordingTimerRunnable = null
+    }
+
+    /**
+     * 执行自动清理旧录像
+     */
+    private fun performAutoDelete() {
+        val deletedCount = videoRecorder.autoDeleteOldRecordings()
+        if (deletedCount > 0) {
+            val prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this)
+            val days = prefs.getString("auto_delete_days", "0")?.toIntOrNull() ?: 0
+            Toast.makeText(
+                this,
+                getString(R.string.auto_delete_completed, deletedCount, days),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    // ==================== 后台录制支持 ====================
+
+    override fun onPause() {
+        super.onPause()
+        // 录制中切到后台时，保持摄像头不释放
+        if (isRecording) {
+            Log.i("MonitorActivity", "📱 录制中进入后台，保持录制继续...")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 从后台恢复时刷新 UI 状态
+        if (isRecording) {
+            Log.i("MonitorActivity", "📱 从后台恢复，录制状态: isRecording=$isRecording")
+            updateRecordButton(true)
+        }
     }
 
     private fun showStreamDialog() {

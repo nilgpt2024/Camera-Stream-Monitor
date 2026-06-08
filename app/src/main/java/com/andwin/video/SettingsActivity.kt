@@ -5,10 +5,16 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.andwin.video.databinding.ActivitySettingsBinding
 import com.andwin.video.utils.LocaleHelper
+import com.andwin.video.webdav.WebDavClient
+import kotlinx.coroutines.launch
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -29,15 +35,60 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
-        
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
-            
+
             // Setup language preference change listener
             val languagePreference = findPreference<ListPreference>("app_language")
             languagePreference?.setOnPreferenceChangeListener { preference, newValue ->
                 showLanguageRestartDialog(newValue.toString())
                 true
+            }
+
+            // Setup WebDAV test connection
+            val webdavTestPref = findPreference<Preference>("webdav_test_connection")
+            webdavTestPref?.setOnPreferenceClickListener {
+                testWebDavConnection()
+                true
+            }
+        }
+
+        private fun testWebDavConnection() {
+            val webDavClient = WebDavClient(requireContext())
+            val config = webDavClient.getConfig()
+
+            if (config == null || config.serverUrl.isBlank()) {
+                Toast.makeText(requireContext(), getString(R.string.webdav_not_configured), Toast.LENGTH_LONG).show()
+                return
+            }
+
+            // 显示测试进度对话框
+            val progressDialog = AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.settings_webdav_test_connection))
+                .setMessage(getString(R.string.webdav_connecting))
+                .setCancelable(false)
+                .show()
+
+            lifecycleScope.launch {
+                val result = webDavClient.testConnection(config)
+
+                progressDialog.dismiss()
+
+                if (result.isSuccess) {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(getString(R.string.settings_webdav_test_connection))
+                        .setMessage(getString(R.string.webdav_connection_success))
+                        .setPositiveButton(getString(R.string.ok), null)
+                        .show()
+                } else {
+                    val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(getString(R.string.settings_webdav_test_connection))
+                        .setMessage(getString(R.string.webdav_connection_failed, error))
+                        .setPositiveButton(getString(R.string.ok), null)
+                        .show()
+                }
             }
         }
         

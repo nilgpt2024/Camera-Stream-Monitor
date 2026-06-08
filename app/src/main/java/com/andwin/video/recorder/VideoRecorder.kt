@@ -1,12 +1,14 @@
 package com.andwin.video.recorder
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.video.FileOutputOptions
 import androidx.camera.video.Recording
 import androidx.camera.video.VideoCapture
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,6 +16,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class VideoRecorder(private val context: Context) {
 
@@ -240,6 +243,39 @@ class VideoRecorder(private val context: Context) {
     fun clearAllRecordings(): Int {
         val files = getRecordingFiles()
         return files.count { it.delete() }
+    }
+
+    /**
+     * 自动清理超过指定天数的旧录像
+     * @return 删除的文件数量
+     */
+    fun autoDeleteOldRecordings(): Int {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val days = prefs.getString("auto_delete_days", "0")?.toIntOrNull() ?: 0
+        if (days <= 0) return 0
+
+        val cutoffTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(days.toLong())
+        val files = getRecordingFiles()
+        var deletedCount = 0
+
+        for (file in files) {
+            if (file.lastModified() < cutoffTime) {
+                try {
+                    if (file.delete()) {
+                        deletedCount++
+                        Log.i(TAG, "自动删除旧录像: ${file.name}")
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "删除旧录像失败: ${file.name}", e)
+                }
+            }
+        }
+
+        if (deletedCount > 0) {
+            Log.i(TAG, "✅ 自动清理完成: 删除了 $deletedCount 个超过 $days 天的旧录像")
+        }
+
+        return deletedCount
     }
 
     fun release() {

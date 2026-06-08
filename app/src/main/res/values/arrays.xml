@@ -37,4 +37,20 @@
         <item>zh</item>
         <item>en</item>
     </string-array>
+
+    <string-array name="auto_delete_days_entries">
+        <item>关闭</item>
+        <item>3 天</item>
+        <item>7 天</item>
+        <item>15 天</item>
+        <item>30 天</item>
+    </string-array>
+
+    <string-array name="auto_delete_days_values">
+        <item>0</item>
+        <item>3</item>
+        <item>7</item>
+        <item>15</item>
+        <item>30</item>
+    </string-array>
 </resources>
