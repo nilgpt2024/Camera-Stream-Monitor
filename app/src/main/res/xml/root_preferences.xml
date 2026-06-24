@@ -113,6 +113,72 @@
             android:summary="@string/restart_app_hint" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/settings_category_advanced">
+
+        <!-- 手部检测 -->
+        <SwitchPreferenceCompat
+            android:key="enable_hand_detection"
+            android:title="@string/settings_enable_hand_detection"
+            android:summary="@string/settings_enable_hand_detection_summary"
+            android:defaultValue="true" />
+
+        <ListPreference
+            android:key="hand_trigger_mode"
+            android:title="@string/settings_hand_trigger_mode"
+            android:entries="@array/hand_trigger_entries"
+            android:entryValues="@array/hand_trigger_values"
+            android:defaultValue="single"
+            android:summary="@string/settings_hand_trigger_mode_summary" />
+
+        <!-- 人脸检测 -->
+        <SwitchPreferenceCompat
+            android:key="enable_face_detection"
+            android:title="@string/settings_enable_face_detection"
+            android:summary="@string/settings_enable_face_detection_summary"
+            android:defaultValue="false" />
+
+        <!-- 姿态检测 -->
+        <SwitchPreferenceCompat
+            android:key="enable_pose_detection"
+            android:title="@string/settings_enable_pose_detection"
+            android:summary="@string/settings_enable_pose_detection_summary"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <!-- 自动触发（检测→录制/推流） -->
+    <PreferenceCategory android:title="@string/settings_category_auto_trigger">
+
+        <SwitchPreferenceCompat
+            android:key="auto_record_on_detect"
+            android:title="@string/settings_auto_record_on_detect"
+            android:summary="@string/settings_auto_record_on_detect_summary"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="auto_stream_on_detect"
+            android:title="@string/settings_auto_stream_on_detect"
+            android:summary="@string/settings_auto_stream_on_detect_summary"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="auto_stop_delay"
+            android:title="@string/settings_auto_stop_delay"
+            android:entries="@array/auto_stop_delay_entries"
+            android:entryValues="@array/auto_stop_delay_values"
+            android:defaultValue="3"
+            android:summary="@string/settings_auto_stop_delay_summary" />
+
+        <ListPreference
+            android:key="detect_trigger_condition"
+            android:title="@string/settings_detect_trigger_condition"
+            android:entries="@array/detect_trigger_entries"
+            android:entryValues="@array/detect_trigger_values"
+            android:defaultValue="any"
+            android:summary="@string/settings_detect_trigger_condition_summary" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/settings_category_about">
 
         <Preference

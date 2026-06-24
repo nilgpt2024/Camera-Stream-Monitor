@@ -104,7 +104,7 @@
             android:padding="6dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:tint="#BDBDBD"
-            android:contentDescription="删除" />
+            android:contentDescription="@string/delete" />
 
         <!-- 上传到 WebDAV 按钮 -->
         <ImageView

@@ -53,4 +53,49 @@
         <item>15</item>
         <item>30</item>
     </string-array>
+
+    <!-- 自动停止延迟（检测消失后多久停止录制/推流） -->
+    <string-array name="auto_stop_delay_entries">
+        <item>1 秒</item>
+        <item>2 秒</item>
+        <item>3 秒</item>
+        <item>5 秒</item>
+        <item>10 秒</item>
+    </string-array>
+
+    <string-array name="auto_stop_delay_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+
+    <!-- 检测触发条件 -->
+    <string-array name="detect_trigger_entries">
+        <item>任意检测器有结果即触发</item>
+        <item>手部检测到（按手部触发模式）</item>
+        <item>人脸检测到人脸</item>
+        <item>姿态检测到人体</item>
+        <item>所有已启用的检测器都有结果</item>
+    </string-array>
+
+    <string-array name="detect_trigger_values">
+        <item>any</item>
+        <item>hand</item>
+        <item>face_any</item>
+        <item>pose_any</item>
+        <item>all</item>
+    </string-array>
+
+    <!-- 手部触发模式：单手/双手 -->
+    <string-array name="hand_trigger_entries">
+        <item>检测到单手即触发</item>
+        <item>检测到双手才触发</item>
+    </string-array>
+
+    <string-array name="hand_trigger_values">
+        <item>single</item>
+        <item>both</item>
+    </string-array>
 </resources>

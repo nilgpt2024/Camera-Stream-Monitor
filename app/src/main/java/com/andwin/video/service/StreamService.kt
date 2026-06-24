@@ -3,6 +3,7 @@ package com.andwin.video.service
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.PowerManager
@@ -10,12 +11,17 @@ import androidx.core.app.NotificationCompat
 import com.andwin.video.MainActivity
 import com.andwin.video.R
 import com.andwin.video.VideoMonitorApp
+import com.andwin.video.utils.LocaleHelper
 
 class StreamService : Service() {
 
     private var isStreaming = false
     private var streamUrl: String = ""
     private var wakeLock: PowerManager.WakeLock? = null
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(LocaleHelper.setLocale(base!!, LocaleHelper.getLocale(base)))
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -34,7 +40,7 @@ class StreamService : Service() {
         isStreaming = true
         // 获取 PARTIAL_WAKE_LOCK，确保熄屏后 CPU 仍运行，推流不中断
         acquireWakeLock()
-        val notification = createNotification("正在推流至 $url")
+        val notification = createNotification(getString(R.string.streaming_to_url, url))
         startForeground(VideoMonitorApp.NOTIFICATION_ID_STREAMING, notification)
 
         sendBroadcast(Intent(ACTION_STREAMING_STATE_CHANGED).putExtra("is_streaming", true))
@@ -60,7 +66,7 @@ class StreamService : Service() {
         )
 
         return NotificationCompat.Builder(this, VideoMonitorApp.CHANNEL_ID_STREAMING)
-            .setContentTitle("视频推流")
+            .setContentTitle(getString(R.string.streaming_notification_title))
             .setContentText(contentText)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)

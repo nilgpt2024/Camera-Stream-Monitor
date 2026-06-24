@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_back"
-            app:title="录制记录"
+            app:title="@string/recordings_title"
             app:titleTextColor="@color/on_surface" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -50,7 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="0 个视频"
+                    android:text="@string/video_count_default"
                     android:textSize="14sp"
                     android:textColor="@color/on_surface_variant" />
 
@@ -123,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="暂无录制记录"
+                        android:text="@string/no_recordings"
                         android:textColor="@color/on_surface"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -133,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="进入监控页面点击录制按钮\n开始您的第一个视频录制"
+                        android:text="@string/recordings_empty_hint"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="14sp"
                         android:lineSpacingMultiplier="1.4"

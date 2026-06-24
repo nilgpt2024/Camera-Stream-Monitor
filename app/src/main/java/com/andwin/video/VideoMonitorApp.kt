@@ -5,8 +5,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.andwin.video.utils.LocaleHelper
 
 class VideoMonitorApp : Application() {
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(LocaleHelper.setLocale(base!!, LocaleHelper.getLocale(base)))
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -20,19 +25,19 @@ class VideoMonitorApp : Application() {
 
             val recordChannel = NotificationChannel(
                 CHANNEL_ID_RECORDING,
-                "视频录制",
+                getString(R.string.notification_channel_recording),
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "视频录制服务通知"
+                description = getString(R.string.notification_channel_recording_desc)
                 setShowBadge(false)
             }
 
             val streamChannel = NotificationChannel(
                 CHANNEL_ID_STREAMING,
-                "视频推流",
+                getString(R.string.notification_channel_streaming),
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "视频推流服务通知"
+                description = getString(R.string.notification_channel_streaming_desc)
                 setShowBadge(false)
             }
 

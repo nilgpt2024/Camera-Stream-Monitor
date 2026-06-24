@@ -2,6 +2,7 @@ package com.andwin.video
 
 import android.Manifest
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -11,9 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andwin.video.databinding.ActivityMainBinding
 import com.andwin.video.model.CameraConfig
+import com.andwin.video.model.Resolution
+import com.andwin.video.model.readSettings
 import com.andwin.video.utils.LocaleHelper
 import kotlinx.coroutines.launch
 
@@ -31,6 +35,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context?) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase!!, LocaleHelper.getLocale(newBase)))
+    }
+
+    override fun applyOverrideConfiguration(overrideConfiguration: android.content.res.Configuration?) {
+        super.applyOverrideConfiguration(LocaleHelper.applyOverrideConfiguration(overrideConfiguration))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                     openMonitor(CameraConfig(
                         id = System.currentTimeMillis().toString(),
                         name = getString(R.string.camera_name_prefix, cameraList.size + 1)
-                    ))
+                    ).applySettings(this))
                     true
                 }
                 R.id.nav_player -> {
@@ -116,9 +124,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun loadCameraConfigs(): List<CameraConfig> {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val settings = prefs.readSettings()
         return listOf(
-            CameraConfig(id = "1", name = getString(R.string.front_camera_name), cameraId = "0"),
+            CameraConfig(id = "1", name = getString(R.string.front_camera_name), cameraId = "0")
+                .copy(resolution = settings.resolution, fps = settings.fps, bitrate = settings.bitrate),
             CameraConfig(id = "2", name = getString(R.string.rear_camera_name), cameraId = "1")
+                .copy(resolution = settings.resolution, fps = settings.fps, bitrate = settings.bitrate)
         )
     }
 

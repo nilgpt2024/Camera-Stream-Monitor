@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.andwin.video.R
 import com.pedro.common.ConnectChecker
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender
@@ -16,12 +17,18 @@ class StreamPublisher(
 ) {
 
     private var rtmpCamera: RtmpCamera1? = null
-    
+
     // 时间水印相关 (使用 RootEncoder ViewSurfaceFilterRender)
     private var timeWatermarkView: TimeWatermarkView? = null
     private var watermarkFilter: BaseFilterRender? = null
     private var isWatermarkEnabled = false
-    
+
+    // 视频配置（可从外部设置）
+    var videoWidth: Int = 640
+    var videoHeight: Int = 480
+    var fps: Int = 30
+    var bitrate: Int = 1200 * 1000
+
     var onConnectionFailed: ((String) -> Unit)? = null
     var onConnectionStarted: (() -> Unit)? = null
     var onConnectionSuccess: (() -> Unit)? = null
@@ -32,15 +39,27 @@ class StreamPublisher(
 
     companion object {
         private const val TAG = "StreamPublisher"
-        
-        const val VIDEO_WIDTH = 640
-        const val VIDEO_HEIGHT = 480
-        const val FPS = 30
-        const val BITRATE = 1200 * 1000
-        
+
+        // 默认值（用于兼容未调用 configureVideo 的情况）
+        const val DEFAULT_VIDEO_WIDTH = 640
+        const val DEFAULT_VIDEO_HEIGHT = 480
+        const val DEFAULT_FPS = 30
+        const val DEFAULT_BITRATE = 1200 * 1000
+
         const val AUDIO_BITRATE = 128 * 1000
         const val AUDIO_SAMPLE_RATE = 32000
         const val AUDIO_IS_STEREO = true
+    }
+
+    /**
+     * 配置视频参数（在 initializeWithCamera 之前调用）
+     */
+    fun configureVideo(width: Int, height: Int, fps: Int, bitrate: Int) {
+        this.videoWidth = width
+        this.videoHeight = height
+        this.fps = fps
+        this.bitrate = bitrate
+        Log.i(TAG, "视频配置已更新: ${width}x${height} @ ${fps}fps | ${bitrate/1000}kbps")
     }
 
     private fun log(msg: String) {
@@ -77,7 +96,7 @@ class StreamPublisher(
         
         override fun onAuthError() {
             log("❌ RTMP auth error")
-            onError?.invoke("认证失败")
+            onError?.invoke(context.getString(R.string.error_auth_failed))
         }
 
         override fun onAuthSuccess() {
@@ -180,7 +199,7 @@ class StreamPublisher(
                 
                 log("========================================")
                 log("🔧 Initializing RTMP Publisher")
-                log("   Video: ${VIDEO_WIDTH}x${VIDEO_HEIGHT}@$FPS ${BITRATE/1024}kbps")
+                log("   Video: ${videoWidth}x${videoHeight}@$fps ${bitrate/1024}kbps")
                 log("   Audio: ${AUDIO_BITRATE/1024}kbps @ ${AUDIO_SAMPLE_RATE}Hz")
                 log("   Rotation: $rotation° (${if (isPortrait) "竖屏" else "横屏"})")
                 log("   水印: ${if (isWatermarkEnabled) "✅ 已启用" else "❌ 未启用"}")
@@ -190,7 +209,7 @@ class StreamPublisher(
                 
                 rtmpCamera?.let { camera ->
                     log("[1/2] Preparing video encoder...")
-                    camera.prepareVideo(VIDEO_WIDTH, VIDEO_HEIGHT, FPS, BITRATE, rotation)
+                    camera.prepareVideo(videoWidth, videoHeight, fps, bitrate, rotation)
                     log("✅ Video prepared OK")
                     
                     log("[2/2] Preparing audio encoder...")
@@ -300,7 +319,7 @@ class StreamPublisher(
         } catch (e: Exception) {
             log("❌ Error starting stream: ${e.message}")
             e.printStackTrace()
-            onError?.invoke("启动失败: ${e.message}")
+            onError?.invoke(context.getString(R.string.error_start_failed, e.message ?: ""))
             false
         }
     }

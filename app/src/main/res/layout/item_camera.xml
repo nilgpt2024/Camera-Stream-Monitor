@@ -64,7 +64,7 @@
                 android:id="@+id/tvCameraName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="摄像头名称"
+                android:text="@string/camera_name_default"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/on_surface"

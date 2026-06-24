@@ -17,6 +17,6 @@
     <item
         android:id="@+id/action_clear_all"
         android:icon="@drawable/ic_delete"
-        android:title="清空全部"
+        android:title="@string/clear_all"
         app:showAsAction="ifRoom" />
 </menu>

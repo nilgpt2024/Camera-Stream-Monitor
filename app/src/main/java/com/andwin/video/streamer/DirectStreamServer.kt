@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
+import com.andwin.video.R
 import com.pedro.common.ConnectChecker
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender
@@ -24,18 +25,24 @@ class DirectStreamServer(
 ) {
 
     private var rtspServer: RtspServerCamera1? = null
-    
+
     // 时间水印相关 (使用 RootEncoder ViewSurfaceFilterRender)
     private var timeWatermarkView: TimeWatermarkView? = null
     private var watermarkFilter: BaseFilterRender? = null
     private var isWatermarkEnabled = false
-    
+
     private var isPrepared = false
     private var isSurfaceReady = false
     private var videoOnlyMode = false
     private var usingFrontCamera = false
 
     private var surfaceWaitContinuation: kotlinx.coroutines.CancellableContinuation<Boolean>? = null
+
+    // 视频配置（可从外部设置）
+    var videoWidth: Int = 640
+    var videoHeight: Int = 480
+    var fps: Int = 30
+    var bitrate: Int = 1200 * 1000
 
     var clientConnectedCallback: ((String) -> Unit)? = null
     var clientDisconnectedCallback: (() -> Unit)? = null
@@ -48,14 +55,25 @@ class DirectStreamServer(
         const val RTSP_PORT = 8554
         const val STREAM_NAME = "live/stream"
 
-        const val VIDEO_WIDTH = 640
-        const val VIDEO_HEIGHT = 480
-        const val FPS = 30
-        const val BITRATE = 1200 * 1000
-        
+        const val DEFAULT_VIDEO_WIDTH = 640
+        const val DEFAULT_VIDEO_HEIGHT = 480
+        const val DEFAULT_FPS = 30
+        const val DEFAULT_BITRATE = 1200 * 1000
+
         const val AUDIO_BITRATE = 128 * 1000
         const val AUDIO_SAMPLE_RATE = 32000
         const val AUDIO_IS_STEREO = true
+    }
+
+    /**
+     * 配置视频参数（在 initialize 之前调用）
+     */
+    fun configureVideo(width: Int, height: Int, fps: Int, bitrate: Int) {
+        this.videoWidth = width
+        this.videoHeight = height
+        this.fps = fps
+        this.bitrate = bitrate
+        Log.i(TAG, "视频配置已更新: ${width}x${height} @ ${fps}fps | ${bitrate/1000}kbps")
     }
 
     private fun log(msg: String) {
@@ -267,7 +285,7 @@ class DirectStreamServer(
             
             log("═══════════════════════════════════════")
             log("🎬 DirectStream Server 初始化")
-            log("   配置: ${VIDEO_WIDTH}x${VIDEO_HEIGHT}@$FPS @${BITRATE/1024}kbps")
+            log("   配置: ${videoWidth}x${videoHeight}@$fps @${bitrate/1024}kbps")
             log("   Rotation: $rotation° (${if (isPortrait) "竖屏" else "横屏"})")
             log("   水印: ${if (isWatermarkEnabled) "✅ 已启用" else "❌ 未启用"}")
             log("═══════════════════════════════════════")
@@ -355,7 +373,7 @@ class DirectStreamServer(
     private fun prepareVideoEncoder(rotation: Int): Boolean {
         return try {
             rtspServer?.prepareVideo(
-                VIDEO_WIDTH, VIDEO_HEIGHT, FPS, BITRATE, rotation
+                videoWidth, videoHeight, fps, bitrate, rotation
             ) ?: false
         } catch (e: Exception) {
             logError("视频编码异常: ${e.message}", e)
@@ -415,7 +433,7 @@ class DirectStreamServer(
             true
         } catch (e: Exception) {
             logError("启动服务器失败: ${e.message}")
-            postToMain { errorCallback?.invoke("启动失败: ${e.message}") }
+            postToMain { errorCallback?.invoke(context.getString(R.string.error_start_failed, e.message ?: "")) }
             false
         }
     }

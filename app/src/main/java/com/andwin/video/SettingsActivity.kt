@@ -41,9 +41,10 @@ class SettingsActivity : AppCompatActivity() {
 
             // Setup language preference change listener
             val languagePreference = findPreference<ListPreference>("app_language")
-            languagePreference?.setOnPreferenceChangeListener { preference, newValue ->
+            languagePreference?.setOnPreferenceChangeListener { _, newValue ->
+                // 先不保存，等用户确认后再保存
                 showLanguageRestartDialog(newValue.toString())
-                true
+                false // 返回 false 暂时不提交更改
             }
 
             // Setup WebDAV test connection
@@ -102,9 +103,12 @@ class SettingsActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.language_settings))
                 .setMessage(getString(R.string.restart_app_hint))
                 .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                    // Save the language setting
+                    // 保存语言设置到 SharedPreferences 并更新资源配置
                     LocaleHelper.setLocale(requireContext(), languageCode)
-                    
+
+                    // 手动更新 ListPreference 的值（因为监听器返回了 false）
+                    findPreference<ListPreference>("app_language")?.value = languageCode
+
                     // Restart the app to apply changes
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -121,5 +125,9 @@ class SettingsActivity : AppCompatActivity() {
     
     override fun attachBaseContext(newBase: android.content.Context?) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase!!, LocaleHelper.getLocale(newBase)))
+    }
+
+    override fun applyOverrideConfiguration(overrideConfiguration: android.content.res.Configuration?) {
+        super.applyOverrideConfiguration(LocaleHelper.applyOverrideConfiguration(overrideConfiguration))
     }
 }

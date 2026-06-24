@@ -29,6 +29,10 @@ class RecordingsActivity : AppCompatActivity() {
         super.attachBaseContext(LocaleHelper.setLocale(newBase!!, LocaleHelper.getLocale(newBase)))
     }
 
+    override fun applyOverrideConfiguration(overrideConfiguration: android.content.res.Configuration?) {
+        super.applyOverrideConfiguration(LocaleHelper.applyOverrideConfiguration(overrideConfiguration))
+    }
+
     private lateinit var binding: ActivityRecordingsBinding
     private lateinit var videoRecorder: VideoRecorder
     private lateinit var webDavClient: WebDavClient

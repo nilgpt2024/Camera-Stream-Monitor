@@ -8,6 +8,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
 import androidx.camera.video.Recorder
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.camera.video.VideoCapture
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -19,24 +20,60 @@ import kotlin.coroutines.resumeWithException
 class CameraManager(private val context: Context) {
 
     private var cameraProvider: ProcessCameraProvider? = null
-    
+
     // 前置摄像头组件
     private var frontCamera: Camera? = null
     private var frontImageCapture: ImageCapture? = null
     private var frontVideoCapture: VideoCapture<Recorder>? = null
     private var frontPreview: Preview? = null
-    
+
     // 后置摄像头组件
     private var backCamera: Camera? = null
     private var backImageCapture: ImageCapture? = null
     private var backVideoCapture: VideoCapture<Recorder>? = null
     private var backPreview: Preview? = null
-    
+
     private var isDualMode = false
     private val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
-    
+
     // 录制质量配置（默认使用 HD，平衡画质和文件大小）
     var recordingQuality: String = "hd"  // "uhd" | "fhd" | "hd" | "sd"
+
+    // 前台模式标志（用于后台录制时保持摄像头活跃）
+    private var isForegroundMode = false
+
+    /**
+     * 获取当前使用的 LifecycleOwner
+     * 前台模式下使用 ProcessLifecycleOwner（不受 Activity 生命周期影响）
+     * 否则使用 Activity 的生命周期
+     */
+    private fun getLifecycleOwner(): androidx.lifecycle.LifecycleOwner {
+        return if (isForegroundMode) {
+            ProcessLifecycleOwner.get()
+        } else {
+            context as androidx.lifecycle.LifecycleOwner
+        }
+    }
+
+    /**
+     * 启动前台模式（用于后台录制）
+     * 切换到 ProcessLifecycleOwner，使摄像头不受 Activity 生命周期影响
+     */
+    fun startForegroundMode() {
+        if (isForegroundMode) return
+        isForegroundMode = true
+        Log.i("CameraManager", "✅ 前台模式已启动 - 摄像头将使用 ProcessLifecycleOwner")
+    }
+
+    /**
+     * 停止前台模式（回到正常模式）
+     * 恢复使用 Activity 的 LifecycleOwner 控制摄像头
+     */
+    fun stopForegroundMode() {
+        if (!isForegroundMode) return
+        isForegroundMode = false
+        Log.i("CameraManager", "⏹ 前台模式已停止 - 恢复 Activity 生命周期控制")
+    }
 
     var onFrameAvailable: ((android.graphics.Bitmap) -> Unit)? = null
 
@@ -75,9 +112,9 @@ class CameraManager(private val context: Context) {
             // 创建 Preview
             val preview = Preview.Builder()
                 .setTargetResolution(resolution)
+                .setTargetFrameRate(android.util.Range(fps, fps))  // 应用用户设置的帧率
                 .build()
                 .also { it.setSurfaceProvider(previewView.surfaceProvider) }
-
             // 创建 ImageCapture (用于拍照)
             val imageCapture = ImageCapture.Builder()
                 .setTargetResolution(resolution)
@@ -109,7 +146,7 @@ class CameraManager(private val context: Context) {
 
             // 绑定所有用例到生命周期
             val camera = provider.bindToLifecycle(
-                (context as androidx.lifecycle.LifecycleOwner),
+                getLifecycleOwner(),
                 cameraSelector,
                 preview,
                 imageCapture,
@@ -140,6 +177,7 @@ class CameraManager(private val context: Context) {
             }
             
             Log.i("CameraManager", "✅ 摄像头启动成功 (cameraId=$cameraId)")
+            Log.i("CameraManager", "   分辨率: ${resolution.width}x${resolution.height} | 帧率: ${fps}fps | 录制质量: $recordingQuality")
             Log.d("CameraManager", "   ImageCapture: ${if (cameraId == "1") "back" else "front"} != null")
             Log.d("CameraManager", "   VideoCapture: ${if (cameraId == "1") "back" else "front"} != null")
 
@@ -181,7 +219,7 @@ class CameraManager(private val context: Context) {
             frontVideoCapture = VideoCapture.withOutput(recorderFront)
 
             frontCamera = provider.bindToLifecycle(
-                context as androidx.lifecycle.LifecycleOwner,
+                getLifecycleOwner(),
                 CameraSelector.DEFAULT_FRONT_CAMERA,
                 frontPreview!!, frontImageCapture!!, frontVideoCapture!!
             )
@@ -206,7 +244,7 @@ class CameraManager(private val context: Context) {
                 backVideoCapture = VideoCapture.withOutput(recorderBack)
 
                 backCamera = provider.bindToLifecycle(
-                    context as androidx.lifecycle.LifecycleOwner,
+                    getLifecycleOwner(),
                     CameraSelector.DEFAULT_BACK_CAMERA,
                     backPreview!!, backImageCapture!!, backVideoCapture!!
                 )
@@ -259,26 +297,29 @@ class CameraManager(private val context: Context) {
     fun forceShutdown() {
         try {
             Log.i("CameraManager", "═══ 强制关闭 CameraProvider ═══")
-            
+
+            // 停止前台模式
+            stopForegroundMode()
+
             // 解绑所有用例
             cameraProvider?.unbindAll()
-            
+
             // 清空引用
             frontCamera = null; backCamera = null
             frontImageCapture = null; backImageCapture = null
             frontVideoCapture = null; backVideoCapture = null
             frontPreview = null; backPreview = null
-            
+
             // 关闭 executor
             if (!cameraExecutor.isShutdown) {
                 cameraExecutor.shutdownNow()
             }
-            
+
             // 完全释放 CameraProvider
             cameraProvider = null
-            
+
             isDualMode = false
-            
+
             Log.i("CameraManager", "✅ CameraProvider 已完全释放")
         } catch (e: Exception) {
             Log.e("CameraManager", "强制关闭异常", e)
@@ -330,7 +371,75 @@ class CameraManager(private val context: Context) {
     fun getBackCamera(): Camera? = backCamera
     fun getCamera(): Camera? = frontCamera ?: backCamera
 
+    // ========== ImageAnalysis 支持（用于手部检测等）==========
+
+    private var currentImageAnalysis: ImageAnalysis? = null
+
+    /**
+     * 绑定 ImageAnalysis 用例到摄像头（用于手部检测等 AI 分析）
+     */
+    fun bindAnalysis(imageAnalysis: ImageAnalysis) {
+        val provider = cameraProvider ?: run {
+            Log.e("CameraManager", "CameraProvider 为空，无法绑定 Analysis")
+            return
+        }
+
+        try {
+            // 保存引用以便后续解绑
+            currentImageAnalysis = imageAnalysis
+
+            // 根据当前模式选择摄像头
+            val cameraSelector = if (isDualMode) {
+                CameraSelector.DEFAULT_FRONT_CAMERA  // 双摄模式下使用前置摄像头进行检测
+            } else if (backCamera != null) {
+                CameraSelector.DEFAULT_BACK_CAMERA
+            } else {
+                CameraSelector.DEFAULT_FRONT_CAMERA
+            }
+
+            // 获取已绑定的用例列表，添加 Analysis
+            val useCases = mutableListOf<UseCase>()
+            frontPreview?.let { useCases.add(it) }
+            backPreview?.let { useCases.add(it) }
+            frontImageCapture?.let { useCases.add(it) }
+            backImageCapture?.let { useCases.add(it) }
+            frontVideoCapture?.let { useCases.add(it) }
+            backVideoCapture?.let { useCases.add(it) }
+
+            // 添加 Analysis
+            useCases.add(imageAnalysis)
+
+            // 重新绑定所有用例
+            provider.unbindAll()
+            provider.bindToLifecycle(
+                getLifecycleOwner(),
+                cameraSelector,
+                *useCases.toTypedArray()
+            )
+
+            Log.i("CameraManager", "✅ ImageAnalysis 已绑定到摄像头")
+        } catch (e: Exception) {
+            Log.e("CameraManager", "绑定 ImageAnalysis 失败", e)
+        }
+    }
+
+    /**
+     * 解绑 ImageAnalysis 用例
+     */
+    fun unbindAnalysis() {
+        try {
+            currentImageAnalysis?.let { analysis ->
+                cameraProvider?.unbind(analysis)
+                currentImageAnalysis = null
+                Log.i("CameraManager", "✅ ImageAnalysis 已解绑")
+            }
+        } catch (e: Exception) {
+            Log.e("CameraManager", "解绑 ImageAnalysis 失败", e)
+        }
+    }
+
     fun shutdown() {
+        stopForegroundMode()
         cameraExecutor.shutdown()
         cameraProvider?.unbindAll()
         cameraProvider = null

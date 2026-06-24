@@ -9,6 +9,7 @@ import androidx.camera.video.Recording
 import androidx.camera.video.VideoCapture
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import com.andwin.video.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,7 +87,7 @@ class VideoRecorder(private val context: Context) {
                         Log.i(TAG, "=== 录制 Finalize 事件 ===")
                         
                         if (event.hasError()) {
-                            val errorMsg = "录制错误: ${event.error}"
+                            val errorMsg = context.getString(R.string.error_recording, event.error.toString())
                             Log.e(TAG, errorMsg)
                             
                             scope.launch { onError(errorMsg) }
@@ -113,7 +114,7 @@ class VideoRecorder(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "启动视频录制失败", e)
             isRecordingActive = false
-            onError("启动失败: ${e.message}")
+            onError(context.getString(R.string.error_start_failed, e.message ?: ""))
             return false
         }
     }
@@ -127,6 +128,31 @@ class VideoRecorder(private val context: Context) {
         onError: (String) -> Unit = {}
     ): Boolean {
         if (isRecordingActive) {
+            return false
+        }
+
+        // 检查摄像头是否处于活跃状态（CameraX 1.3+ 限制 getCamera 调用，通过 try-catch 处理）
+        val camera = try {
+            @Suppress("RestrictedApi")
+            imageCapture.camera
+        } catch (e: SecurityException) {
+            Log.w(TAG, "无摄像头权限", e)
+            null
+        } catch (e: Exception) {
+            Log.w(TAG, "检查摄像头状态失败", e)
+            null
+        }
+        if (camera == null) {
+            Log.w(TAG, "摄像头未绑定，无法拍照")
+            onError("摄像头未就绪，请稍后重试")
+            return false
+        }
+
+        // 检查 Camera Session 是否处于 OPEN 状态（避免 VideoEncoder 状态转换时冲突）
+        val cameraState = camera.cameraInfo.cameraState.value
+        if (cameraState?.type != androidx.camera.core.CameraState.Type.OPEN) {
+            Log.w(TAG, "Camera Session 未就绪，当前状态: $cameraState")
+            onError(context.getString(R.string.error_camera_busy))
             return false
         }
 
@@ -174,7 +200,7 @@ class VideoRecorder(private val context: Context) {
 
         } catch (e: Exception) {
             Log.e(TAG, "启动拍照失败", e)
-            onError("启动失败: ${e.message}")
+            onError(context.getString(R.string.error_start_failed, e.message ?: ""))
             return false
         }
     }
@@ -188,7 +214,7 @@ class VideoRecorder(private val context: Context) {
         onError: (String) -> Unit = {}
     ): Boolean {
         if (imageCapture == null) {
-            onError("ImageCapture 为空")
+            onError(context.getString(R.string.error_imagecapture_null))
             return false
         }
         

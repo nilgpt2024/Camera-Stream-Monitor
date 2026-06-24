@@ -4,26 +4,26 @@
     <item
         android:id="@+id/nav_cameras"
         android:icon="@drawable/ic_videocam"
-        android:title="摄像头" />
+        android:title="@string/cameras_label" />
 
     <item
         android:id="@+id/nav_recordings"
         android:icon="@drawable/ic_video_file"
-        android:title="录制" />
+        android:title="@string/recordings_label" />
 
     <item
         android:id="@+id/nav_add"
         android:icon="@drawable/ic_add"
-        android:title="添加" />
+        android:title="@string/nav_add" />
 
     <item
         android:id="@+id/nav_player"
         android:icon="@drawable/ic_play_circle"
-        android:title="播放" />
+        android:title="@string/play" />
 
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
-        android:title="设置" />
+        android:title="@string/settings" />
 
 </menu>

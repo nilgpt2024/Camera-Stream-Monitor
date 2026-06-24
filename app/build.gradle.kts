@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.google.code.gson:gson:2.10.1")
@@ -100,4 +101,8 @@ dependencies {
 
     // 权限请求
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+
+    // MediaPipe - 手部检测（官方 Tasks Vision API）
+    // 参考文档: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/android
+    implementation("com.google.mediapipe:tasks-vision:0.10.21")
 }

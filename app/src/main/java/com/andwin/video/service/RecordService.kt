@@ -12,11 +12,16 @@ import androidx.preference.PreferenceManager
 import com.andwin.video.MainActivity
 import com.andwin.video.R
 import com.andwin.video.VideoMonitorApp
+import com.andwin.video.utils.LocaleHelper
 
 class RecordService : Service() {
 
     private var isRecording = false
     private var wakeLock: PowerManager.WakeLock? = null
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(LocaleHelper.setLocale(base!!, LocaleHelper.getLocale(base)))
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -67,7 +72,7 @@ class RecordService : Service() {
     private fun getRecordingStatusText(): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val bgEnabled = prefs.getBoolean("background_recording", true)
-        return if (bgEnabled) getString(R.string.recording_in_background) else "正在录制..."
+        return if (bgEnabled) getString(R.string.recording_in_background) else getString(R.string.recording_status)
     }
 
     private fun createNotification(contentText: String): Notification {
@@ -79,7 +84,7 @@ class RecordService : Service() {
         )
 
         return NotificationCompat.Builder(this, VideoMonitorApp.CHANNEL_ID_RECORDING)
-            .setContentTitle("视频监控")
+            .setContentTitle(getString(R.string.app_name))
             .setContentText(contentText)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
